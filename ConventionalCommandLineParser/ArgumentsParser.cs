@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ConventionalCommandLineParser
 {
-    public static class ArgumentsParser
+    internal static class ArgumentsParser
     {
         public static Command[] Parse(string[] args)
         {

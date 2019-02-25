@@ -2,7 +2,7 @@
 
 namespace ConventionalCommandLineParser.Models
 {
-    public class Argument
+    internal class Argument
     {
         public Argument(string argument)
         {           
