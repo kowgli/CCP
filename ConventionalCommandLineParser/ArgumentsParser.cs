@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ConventionalCommandLineParser
 {
-    internal static class ArgumentsParser
+    public static class ArgumentsParser
     {
         public static Command[] Parse(string[] args)
         {
@@ -19,9 +19,10 @@ namespace ConventionalCommandLineParser
 
             foreach (string arg in args)
             {
-                if(ArgumentIsAction(arg))
+                if(ArgumentIsCommand(arg))
                 {
                     command = new Command(arg);
+                    commands.Add(command);
                     continue;
                 }
 
@@ -37,9 +38,11 @@ namespace ConventionalCommandLineParser
             return commands.ToArray();
         }
 
-        private static bool ArgumentIsAction(string argument)
+        private static bool ArgumentIsCommand(string argument)
         {
-            return argument?.Contains("=") ?? false;
+            argument = argument ?? throw new ArgumentNullException(nameof(argument));
+
+            return !argument.Contains("=");
         }
     }
 }

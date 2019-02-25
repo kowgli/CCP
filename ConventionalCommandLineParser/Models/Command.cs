@@ -2,7 +2,7 @@
 
 namespace ConventionalCommandLineParser.Models
 {
-    internal class Command
+    public class Command
     {
         private List<Argument> arguments = new List<Argument>();
 
