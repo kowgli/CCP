@@ -5,7 +5,7 @@
 namespace ConventionalCommandLineParser
 {
     
-    internal class Assembly
+    internal class Config
     {
         
     }
