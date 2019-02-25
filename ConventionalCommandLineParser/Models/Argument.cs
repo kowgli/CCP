@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ConventionalCommandLineParser.Models
+﻿namespace ConventionalCommandLineParser.Models
 {
-    public class Argument
+    internal class Argument
     {
+        public Argument(string argument)
+        {
+            this.Name = "";
+            this.Value = "";
+        }
+
         public string Name { get; set; }
         public string Value { get; set; }
-        public bool IsComplexType => Value?.StartsWith("{") ?? false;
+        public bool IsJson => Value?.StartsWith("{") ?? false;
+        public bool IsLiteralString => Value?.StartsWith("\"") ?? false;
     }
 }
