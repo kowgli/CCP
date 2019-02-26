@@ -4,7 +4,7 @@
     {
         public void Run()
         {
-            ExecutionState.AddExecution(nameof(CommandWithNoArgs));
+            
         }
     }
 }

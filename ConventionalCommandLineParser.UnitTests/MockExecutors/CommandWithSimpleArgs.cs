@@ -12,12 +12,7 @@ namespace ConventionalCommandLineParser.UnitTests.MockExecutors
 
         public void Run()
         {
-            ExecutionState.AddExecution(nameof(CommandWithNoArgs), new System.Collections.Generic.Dictionary<string, object>
-            {
-                { nameof(Arg1), Arg1 },
-                { nameof(Arg2), Arg2 },
-                { nameof(Arg3), Arg3 }
-            });
+            
         }
     }
 }
