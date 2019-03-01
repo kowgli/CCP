@@ -10,9 +10,15 @@ namespace ConventionalCommandLineParser.UnitTests.MockExecutors
 
         public decimal Arg3 { get; set; }
 
+        public decimal Arg4 { get; private set; }
+
+#pragma warning disable IDE0052 // Remove unread private members
+        private decimal Arg5 { get;  set; }
+#pragma warning restore IDE0052 // Remove unread private members
+
         public void Run()
         {
-            
+            Arg5 = 0;
         }
     }
 }

@@ -32,22 +32,14 @@ namespace ConventionalCommandLineParser
 
             foreach(Command parsedArgument in parsedArguments)
             {
-                TypeInfo executable = executableTypes
-                                     .Where(t => t.Name == parsedArgument.Name)
-                                     .FirstOrDefault();
-
-                if(executable == null)
-                {
-                    throw new ExecutableNotFoundException(message: "Not found", executableName: parsedArgument.Name);
-                }
-
-                IExecutable instance = (IExecutable)Activator.CreateInstance(executable.AsType());
+                IExecutable instance = ExecutableBuilder.CreateInstance(executableTypes, parsedArgument);
 
                 result.Add(instance);
             }
 
             return result.ToArray();
         }
+
 
         internal static void ExecuteExecutables(IExecutable[] executables)
         {
