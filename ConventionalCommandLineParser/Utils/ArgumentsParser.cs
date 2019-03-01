@@ -3,7 +3,7 @@ using ConventionalCommandLineParser.Models;
 using System;
 using System.Collections.Generic;
 
-namespace ConventionalCommandLineParser
+namespace ConventionalCommandLineParser.Utils
 {
     internal static class ArgumentsParser
     {

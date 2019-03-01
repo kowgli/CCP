@@ -1,4 +1,5 @@
 using ConventionalCommandLineParser.Models;
+using ConventionalCommandLineParser.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ConventionalCommandLineParser.UnitTests

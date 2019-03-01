@@ -1,13 +1,10 @@
 ﻿using ConventionalCommandLineParser.Exceptions;
 using ConventionalCommandLineParser.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ConventionalCommandLineParser
+namespace ConventionalCommandLineParser.Utils
 {
     internal static class ExecutableBuilder
     {
@@ -69,10 +66,10 @@ namespace ConventionalCommandLineParser
 
         private static void SetPropertiesOnInstance(IExecutable instance, Command command, PropertyInfo[] availableProperties)
         {
-            foreach(Argument argument in command.Arguments)
+            foreach (Argument argument in command.Arguments)
             {
                 PropertyInfo property = availableProperties.First(p => p.Name.ToLowerInvariant() == argument.Name.ToLowerInvariant());
-                property.SetValue(instance, argument.Value);
+                property.SetValue(instance, ValueBuilder.GetValueFromString(property.PropertyType, argument.Value));
             }
         }
     }

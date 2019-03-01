@@ -30,7 +30,7 @@ namespace ConventionalCommandLineParser.UnitTests
         [TestMethod]
         public void When_CommandWithArgs_ProperyValuesAreSet()
         {
-            string[] args = new string[] { "CommandWithSimpleArgs", "Arg1=\"test value\"", "Arg2=3", "Arg3=123.45" };
+            string[] args = new string[] { "CommandWithSimpleArgs", "Arg1=test", "Arg2=3", "Arg3=123.45" };
 
             IExecutable[] executables = Executor.BuildExecutables(args, typeof(ExecutorTests).Assembly);
 
@@ -39,9 +39,9 @@ namespace ConventionalCommandLineParser.UnitTests
 
             CommandWithSimpleArgs command = (CommandWithSimpleArgs) executables[0];
 
-            Assert.AreEqual("test value", command.Arg1);
+            Assert.AreEqual("test", command.Arg1);
             Assert.AreEqual(3, command.Arg2);
-            Assert.AreEqual(123.45, command.Arg3);
+            Assert.AreEqual(123.45M, command.Arg3);
         }
     }
 }

@@ -28,11 +28,11 @@ namespace ConventionalCommandLineParser
                                                            .Where(x => x.ImplementedInterfaces.Contains(typeof(IExecutable)))
                                                            .ToArray();
 
-            Command[] parsedArguments = ArgumentsParser.Parse(args);
+            Command[] parsedArguments = Utils.ArgumentsParser.Parse(args);
 
             foreach(Command parsedArgument in parsedArguments)
             {
-                IExecutable instance = ExecutableBuilder.CreateInstance(executableTypes, parsedArgument);
+                IExecutable instance = Utils.ExecutableBuilder.CreateInstance(executableTypes, parsedArgument);
 
                 result.Add(instance);
             }
