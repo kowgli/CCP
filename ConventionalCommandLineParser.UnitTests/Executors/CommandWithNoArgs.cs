@@ -1,4 +1,4 @@
-﻿namespace ConventionalCommandLineParser.UnitTests.MockExecutors
+﻿namespace ConventionalCommandLineParser.UnitTests.Executors
 {
     public class CommandWithNoArgs : IExecutable
     {       

@@ -78,7 +78,7 @@ namespace ConventionalCommandLineParser.Utils
             foreach (Argument argument in command.Arguments)
             {
                 PropertyInfo property = availableProperties.First(p => p.Name.ToLowerInvariant() == argument.Name.ToLowerInvariant());
-                property.SetValue(instance, valueBuilder.GetValueFromString(property.PropertyType, argument.Value));
+                property.SetValue(instance, valueBuilder.GetValue(property.PropertyType, argument));
             }
         }
     }

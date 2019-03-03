@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConventionalCommandLineParser.UnitTests.MockExecutors
+namespace ConventionalCommandLineParser.UnitTests.Executors
 {
     public class CommandWithSimpleArgs : IExecutable
     {

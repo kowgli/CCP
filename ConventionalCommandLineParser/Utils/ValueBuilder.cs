@@ -1,4 +1,6 @@
 ﻿using ConventionalCommandLineParser.Exceptions;
+using ConventionalCommandLineParser.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -35,22 +37,26 @@ namespace ConventionalCommandLineParser.Utils
                 { typeof(char), s => s[0] },
                 { typeof(bool), s => bool.Parse(s) },
                 {
-                    typeof(DateTime), s => dateFormat != null ? 
-                                         DateTime.ParseExact(s, dateFormat, locale) : DateTime.Parse(s, locale)
+                    typeof(DateTime),
+                    s => dateFormat != null ? DateTime.ParseExact(s, dateFormat, locale) : DateTime.Parse(s, locale)
                 }
             };
         }
 
-        public object GetValueFromString(Type type, string value)
+        public object GetValue(Type type, Argument argument)
         {
             var parsers = GetDefaultParsers();
-
-            if (!parsers.ContainsKey(type))
+            if (parsers.ContainsKey(type))
             {
-                throw new TypeNotSupportedException(message: "Not supported", type: type);
+                return parsers[type](argument.Value);
             }
 
-            return parsers[type](value);
+            if(argument.IsPotentialJson)
+            {
+                return JsonConvert.DeserializeObject(argument.Value, type);
+            }
+
+            throw new TypeNotSupportedException(message: "Not supported", type: type);            
         }
     }
 }
