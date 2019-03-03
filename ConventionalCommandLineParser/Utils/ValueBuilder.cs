@@ -45,15 +45,22 @@ namespace ConventionalCommandLineParser.Utils
 
         public object GetValue(Type type, Argument argument)
         {
-            var parsers = GetDefaultParsers();
-            if (parsers.ContainsKey(type))
+            try
             {
-                return parsers[type](argument.Value);
-            }
+                var parsers = GetDefaultParsers();
+                if (parsers.ContainsKey(type))
+                {
+                    return parsers[type](argument.Value);
+                }
 
-            if(argument.IsPotentialJson)
+                if (argument.IsPotentialJson)
+                {
+                    return JsonConvert.DeserializeObject(argument.Value, type);
+                }
+            }
+            catch(Exception ex)
             {
-                return JsonConvert.DeserializeObject(argument.Value, type);
+                throw new ValueParsingException($"Could not parse value \"{argument.Value}\" as {type}. See inner exception for the actual exception thrown.", ex);
             }
 
             throw new TypeNotSupportedException(message: "Not supported", type: type);            

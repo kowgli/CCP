@@ -1,4 +1,5 @@
-﻿using ConventionalCommandLineParser.UnitTests.Executors;
+﻿using ConventionalCommandLineParser.Exceptions;
+using ConventionalCommandLineParser.UnitTests.Executors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Globalization;
@@ -133,6 +134,14 @@ namespace ConventionalCommandLineParser.UnitTests
             Assert.AreEqual(2015, command.Arg1.Year, "year value incorrect");
             Assert.AreEqual(2, command.Arg1.Month, "month value incorrect");
             Assert.AreEqual(12, command.Arg1.Day, "day value incorrect");
+        }
+
+        [TestMethod]
+        public void When_InvalidValue_ThrowsValueParsingException()
+        {
+            string[] args = new string[] { "CommandWithDateTimeArg", $"Arg1=not_a_date" };
+
+            Assert.ThrowsException<ValueParsingException>(() => Executor.BuildExecutables(args, typeof(ExecutorTests).Assembly, FormattingOptions.Default));
         }
     }
 }
