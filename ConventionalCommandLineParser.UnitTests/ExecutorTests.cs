@@ -1,5 +1,6 @@
 ﻿using ConventionalCommandLineParser.UnitTests.MockExecutors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Globalization;
 
 namespace ConventionalCommandLineParser.UnitTests
 {
@@ -11,7 +12,7 @@ namespace ConventionalCommandLineParser.UnitTests
         {
             string[] args = new string[] { };
 
-            IExecutable[] executables = Executor.BuildExecutables(args, typeof(ExecutorTests).Assembly);
+            IExecutable[] executables = Executor.BuildExecutables(args, typeof(ExecutorTests).Assembly, FormattingOptions.Default);
 
             Assert.AreEqual(0, executables.Length);
         }
@@ -21,7 +22,7 @@ namespace ConventionalCommandLineParser.UnitTests
         {
             string[] args = new string[] { "CommandWithNoArgs" };
 
-            IExecutable[] executables = Executor.BuildExecutables(args, typeof(ExecutorTests).Assembly);
+            IExecutable[] executables = Executor.BuildExecutables(args, typeof(ExecutorTests).Assembly, FormattingOptions.Default);
 
             Assert.AreEqual(1, executables.Length);
             Assert.IsTrue(executables[0] is CommandWithNoArgs);
@@ -32,12 +33,32 @@ namespace ConventionalCommandLineParser.UnitTests
         {
             string[] args = new string[] { "CommandWithSimpleArgs", "Arg1=test", "Arg2=3", "Arg3=123.45" };
 
-            IExecutable[] executables = Executor.BuildExecutables(args, typeof(ExecutorTests).Assembly);
+            IExecutable[] executables = Executor.BuildExecutables(args, typeof(ExecutorTests).Assembly, FormattingOptions.Default);
 
             Assert.AreEqual(1, executables.Length);
             Assert.IsTrue(executables[0] is CommandWithSimpleArgs);
 
             CommandWithSimpleArgs command = (CommandWithSimpleArgs) executables[0];
+
+            Assert.AreEqual("test", command.Arg1);
+            Assert.AreEqual(3, command.Arg2);
+            Assert.AreEqual(123.45M, command.Arg3);
+        }
+
+        [TestMethod]
+        public void When_CommandWithArgsInDifferentLocale_ProperyValuesAreSet()
+        {
+            string[] args = new string[] { "CommandWithSimpleArgs", "Arg1=test", "Arg2=3", "Arg3=123,45" };
+
+            var formattingOptions = FormattingOptions.Default;
+            formattingOptions.Locale = new CultureInfo("pl-PL");
+
+            IExecutable[] executables = Executor.BuildExecutables(args, typeof(ExecutorTests).Assembly, formattingOptions);
+
+            Assert.AreEqual(1, executables.Length);
+            Assert.IsTrue(executables[0] is CommandWithSimpleArgs);
+
+            CommandWithSimpleArgs command = (CommandWithSimpleArgs)executables[0];
 
             Assert.AreEqual("test", command.Arg1);
             Assert.AreEqual(3, command.Arg2);

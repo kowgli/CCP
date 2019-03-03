@@ -6,9 +6,18 @@ using System.Reflection;
 
 namespace ConventionalCommandLineParser.Utils
 {
-    internal static class ExecutableBuilder
+    internal class ExecutableBuilder
     {
-        public static IExecutable CreateInstance(TypeInfo[] executableTypes, Command command)
+        private ValueBuilder valueBuilder;
+
+        public ExecutableBuilder(FormattingOptions formatingOptions)
+        {
+            formatingOptions = formatingOptions ?? throw new ArgumentNullException(nameof(formatingOptions));
+
+            valueBuilder = new ValueBuilder(formatingOptions.Locale, formatingOptions.DateFormat);
+        }
+
+        public IExecutable CreateInstance(TypeInfo[] executableTypes, Command command)
         {
             executableTypes = executableTypes ?? throw new ArgumentNullException(nameof(executableTypes));
             command = command ?? throw new ArgumentNullException(nameof(command));
@@ -23,7 +32,7 @@ namespace ConventionalCommandLineParser.Utils
             return instance;
         }
 
-        private static TypeInfo FindExecutableTypeWithValidation(TypeInfo[] executableTypes, Command command)
+        private TypeInfo FindExecutableTypeWithValidation(TypeInfo[] executableTypes, Command command)
         {
             TypeInfo[] filteredExecutableTypes = executableTypes
                                                       .Where(t => t.Name.ToLowerInvariant() == command.Name.ToLowerInvariant())
@@ -41,7 +50,7 @@ namespace ConventionalCommandLineParser.Utils
             return filteredExecutableTypes[0];
         }
 
-        private static PropertyInfo[] FindPropertiesWithValidation(TypeInfo typeInfo, Command command)
+        private PropertyInfo[] FindPropertiesWithValidation(TypeInfo typeInfo, Command command)
         {
             PropertyInfo[] availableProperties = typeInfo.DeclaredProperties
                                                          .Where(p => p.CanWrite && p.SetMethod?.IsPublic == true)
@@ -64,12 +73,12 @@ namespace ConventionalCommandLineParser.Utils
             return availableProperties;
         }
 
-        private static void SetPropertiesOnInstance(IExecutable instance, Command command, PropertyInfo[] availableProperties)
+        private void SetPropertiesOnInstance(IExecutable instance, Command command, PropertyInfo[] availableProperties)
         {
             foreach (Argument argument in command.Arguments)
             {
                 PropertyInfo property = availableProperties.First(p => p.Name.ToLowerInvariant() == argument.Name.ToLowerInvariant());
-                property.SetValue(instance, ValueBuilder.GetValueFromString(property.PropertyType, argument.Value));
+                property.SetValue(instance, valueBuilder.GetValueFromString(property.PropertyType, argument.Value));
             }
         }
     }
