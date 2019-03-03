@@ -8,7 +8,6 @@ namespace ConventionalCommandLineParser.UnitTests.Executors
 
         public void Run()
         {
-            throw new System.NotImplementedException();
         }
     }
 }

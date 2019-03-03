@@ -1,5 +1,6 @@
 ﻿using ConventionalCommandLineParser.UnitTests.Executors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Globalization;
 
 namespace ConventionalCommandLineParser.UnitTests
@@ -87,7 +88,51 @@ namespace ConventionalCommandLineParser.UnitTests
             Assert.AreEqual(123, command.Arg1.IntValue, "int value incorrect");
             Assert.AreEqual("hello world", command.Arg1.StringValue, "string value incorrect");
             Assert.IsTrue(command.Arg1.BoolValue, "bool value incorrect");
+        }
 
+        [TestMethod]
+        public void When_DateTimeWithDefaultFormat_PropertyValuesAreSet()
+        {
+            DateTime dateTime = DateTime.Now;
+
+            string dateTimeString = dateTime.ToShortDateString();
+
+            string[] args = new string[] { "CommandWithDateTimeArg", $"Arg1={dateTimeString}" };
+
+            IExecutable[] executables = Executor.BuildExecutables(args, typeof(ExecutorTests).Assembly, FormattingOptions.Default);
+
+            Assert.AreEqual(1, executables.Length);
+            Assert.IsTrue(executables[0] is CommandWithDateTimeArg);
+
+            CommandWithDateTimeArg command = (CommandWithDateTimeArg)executables[0];
+
+            Assert.AreEqual(dateTime.Year, command.Arg1.Year, "year value incorrect");
+            Assert.AreEqual(dateTime.Month, command.Arg1.Month, "month value incorrect");
+            Assert.AreEqual(dateTime.Day, command.Arg1.Day, "day value incorrect");           
+        }
+
+        [TestMethod]
+        public void When_DateTimeWithSpecifiedFormat_PropertyValuesAreSet()
+        {
+            string dateTimeString = "2015-02.12";
+
+            string[] args = new string[] { "CommandWithDateTimeArg", $"Arg1={dateTimeString}" };
+
+            FormattingOptions formattingOptions = new FormattingOptions
+            {
+                DateFormat = "yyyy-MM.dd"
+            };
+
+            IExecutable[] executables = Executor.BuildExecutables(args, typeof(ExecutorTests).Assembly, formattingOptions);
+
+            Assert.AreEqual(1, executables.Length);
+            Assert.IsTrue(executables[0] is CommandWithDateTimeArg);
+
+            CommandWithDateTimeArg command = (CommandWithDateTimeArg)executables[0];
+
+            Assert.AreEqual(2015, command.Arg1.Year, "year value incorrect");
+            Assert.AreEqual(2, command.Arg1.Month, "month value incorrect");
+            Assert.AreEqual(12, command.Arg1.Day, "day value incorrect");
         }
     }
 }
