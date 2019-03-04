@@ -22,25 +22,25 @@ namespace ConventionalCommandLineParser.UnitTests
         [TestMethod]
         public void When_CommandWithNoArgs_BuildsCorrectExecutable()
         {
-            string[] args = new string[] { "CommandWithNoArgs" };
+            string[] args = new string[] { nameof(CommandWithNoProps) };
 
             IExecutable[] executables = Executor.BuildExecutables(args, typeof(ExecutorTests).Assembly, FormattingOptions.Default);
 
             Assert.AreEqual(1, executables.Length);
-            Assert.IsTrue(executables[0] is CommandWithNoArgs);
+            Assert.IsTrue(executables[0] is CommandWithNoProps);
         }
 
         [TestMethod]
         public void When_CommandWithArgs_PropertyValuesAreSet()
         {
-            string[] args = new string[] { "CommandWithSimpleArgs", "Arg1=test", "Arg2=3", "Arg3=123.45" };
+            string[] args = new string[] { nameof(CommandWithSimpleProps), "Arg1=test", "Arg2=3", "Arg3=123.45" };
 
             IExecutable[] executables = Executor.BuildExecutables(args, typeof(ExecutorTests).Assembly, FormattingOptions.Default);
 
             Assert.AreEqual(1, executables.Length);
-            Assert.IsTrue(executables[0] is CommandWithSimpleArgs);
+            Assert.IsTrue(executables[0] is CommandWithSimpleProps);
 
-            CommandWithSimpleArgs command = (CommandWithSimpleArgs) executables[0];
+            CommandWithSimpleProps command = (CommandWithSimpleProps) executables[0];
 
             Assert.AreEqual("test", command.Arg1);
             Assert.AreEqual(3, command.Arg2);
@@ -50,7 +50,7 @@ namespace ConventionalCommandLineParser.UnitTests
         [TestMethod]
         public void When_CommandWithArgsInDifferentLocale_PropertyValuesAreSet()
         {
-            string[] args = new string[] { "CommandWithSimpleArgs", "Arg1=test", "Arg2=3", "Arg3=123,45" };
+            string[] args = new string[] { nameof(CommandWithSimpleProps), "Arg1=test", "Arg2=3", "Arg3=123,45" };
 
             var formattingOptions = FormattingOptions.Default;
             formattingOptions.Locale = new CultureInfo("pl-PL");
@@ -58,9 +58,9 @@ namespace ConventionalCommandLineParser.UnitTests
             IExecutable[] executables = Executor.BuildExecutables(args, typeof(ExecutorTests).Assembly, formattingOptions);
 
             Assert.AreEqual(1, executables.Length);
-            Assert.IsTrue(executables[0] is CommandWithSimpleArgs);
+            Assert.IsTrue(executables[0] is CommandWithSimpleProps);
 
-            CommandWithSimpleArgs command = (CommandWithSimpleArgs)executables[0];
+            CommandWithSimpleProps command = (CommandWithSimpleProps)executables[0];
 
             Assert.AreEqual("test", command.Arg1);
             Assert.AreEqual(3, command.Arg2);
@@ -76,14 +76,14 @@ namespace ConventionalCommandLineParser.UnitTests
                 BoolValue: true
             }";
 
-            string[] args = new string[] { "CommandWithComplexArg", $"Arg1={json}" };
+            string[] args = new string[] { nameof(CommandWithComplexProp), $"Arg1={json}" };
 
             IExecutable[] executables = Executor.BuildExecutables(args, typeof(ExecutorTests).Assembly, FormattingOptions.Default);
 
             Assert.AreEqual(1, executables.Length);
-            Assert.IsTrue(executables[0] is CommandWithComplexArg);
+            Assert.IsTrue(executables[0] is CommandWithComplexProp);
 
-            CommandWithComplexArg command = (CommandWithComplexArg)executables[0];
+            CommandWithComplexProp command = (CommandWithComplexProp)executables[0];
 
             Assert.IsNotNull(command.Arg1);
             Assert.AreEqual(123, command.Arg1.IntValue, "int value incorrect");
@@ -98,14 +98,14 @@ namespace ConventionalCommandLineParser.UnitTests
 
             string dateTimeString = dateTime.ToShortDateString();
 
-            string[] args = new string[] { "CommandWithDateTimeArg", $"Arg1={dateTimeString}" };
+            string[] args = new string[] { nameof(CommandWithDateTimeProp), $"Arg1={dateTimeString}" };
 
             IExecutable[] executables = Executor.BuildExecutables(args, typeof(ExecutorTests).Assembly, FormattingOptions.Default);
 
             Assert.AreEqual(1, executables.Length);
-            Assert.IsTrue(executables[0] is CommandWithDateTimeArg);
+            Assert.IsTrue(executables[0] is CommandWithDateTimeProp);
 
-            CommandWithDateTimeArg command = (CommandWithDateTimeArg)executables[0];
+            CommandWithDateTimeProp command = (CommandWithDateTimeProp)executables[0];
 
             Assert.AreEqual(dateTime.Year, command.Arg1.Year, "year value incorrect");
             Assert.AreEqual(dateTime.Month, command.Arg1.Month, "month value incorrect");
@@ -117,7 +117,7 @@ namespace ConventionalCommandLineParser.UnitTests
         {
             string dateTimeString = "2015-02.12";
 
-            string[] args = new string[] { "CommandWithDateTimeArg", $"Arg1={dateTimeString}" };
+            string[] args = new string[] { nameof(CommandWithDateTimeProp), $"Arg1={dateTimeString}" };
 
             FormattingOptions formattingOptions = new FormattingOptions
             {
@@ -127,9 +127,9 @@ namespace ConventionalCommandLineParser.UnitTests
             IExecutable[] executables = Executor.BuildExecutables(args, typeof(ExecutorTests).Assembly, formattingOptions);
 
             Assert.AreEqual(1, executables.Length);
-            Assert.IsTrue(executables[0] is CommandWithDateTimeArg);
+            Assert.IsTrue(executables[0] is CommandWithDateTimeProp);
 
-            CommandWithDateTimeArg command = (CommandWithDateTimeArg)executables[0];
+            CommandWithDateTimeProp command = (CommandWithDateTimeProp)executables[0];
 
             Assert.AreEqual(2015, command.Arg1.Year, "year value incorrect");
             Assert.AreEqual(2, command.Arg1.Month, "month value incorrect");
@@ -139,9 +139,27 @@ namespace ConventionalCommandLineParser.UnitTests
         [TestMethod]
         public void When_InvalidValue_ThrowsValueParsingException()
         {
-            string[] args = new string[] { "CommandWithDateTimeArg", $"Arg1=not_a_date" };
+            string[] args = new string[] { nameof(CommandWithDateTimeProp), $"Arg1=not_a_date" };
 
             Assert.ThrowsException<ValueParsingException>(() => Executor.BuildExecutables(args, typeof(ExecutorTests).Assembly, FormattingOptions.Default));
+        }
+
+        [TestMethod]
+        public void When_MissingRequiredProperty_ThrowsException()
+        {
+            string[] args = new string[] { nameof(CommandWithRequiredProp), $"Arg1=1" };
+
+            try
+            {
+                Executor.BuildExecutables(args, typeof(ExecutorTests).Assembly, FormattingOptions.Default);
+
+                Assert.Fail("Should have thrown an exception");
+            }
+            catch(MissingRequiredParameterException ex)
+            {
+                Assert.AreEqual("CommandWithRequiredProp", ex.ExecutableName);
+                Assert.AreEqual("Arg2", ex.ParameterName);
+            }
         }
     }
 }

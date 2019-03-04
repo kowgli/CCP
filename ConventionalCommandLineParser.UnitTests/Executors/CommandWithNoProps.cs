@@ -1,6 +1,6 @@
 ﻿namespace ConventionalCommandLineParser.UnitTests.Executors
 {
-    public class CommandWithNoArgs : IExecutable
+    public class CommandWithNoProps : IExecutable
     {       
         public void Run()
         {

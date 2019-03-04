@@ -1,4 +1,5 @@
-﻿using ConventionalCommandLineParser.Exceptions;
+﻿using ConventionalCommandLineParser.Attributes;
+using ConventionalCommandLineParser.Exceptions;
 using ConventionalCommandLineParser.Models;
 using System;
 using System.Linq;
@@ -23,6 +24,8 @@ namespace ConventionalCommandLineParser.Utils
             command = command ?? throw new ArgumentNullException(nameof(command));
             TypeInfo executableType = FindExecutableTypeWithValidation(executableTypes, command);
 
+            ValidateRequiredProperties(executableType, command);
+
             PropertyInfo[] availableProperties = FindPropertiesWithValidation(executableType, command);
 
             IExecutable instance = (IExecutable)Activator.CreateInstance(executableType.AsType());
@@ -30,6 +33,20 @@ namespace ConventionalCommandLineParser.Utils
             SetPropertiesOnInstance(instance, command, availableProperties);
 
             return instance;
+        }
+
+        private void ValidateRequiredProperties(TypeInfo executableType, Command command)
+        {
+            var requiredProperties = executableType.DeclaredProperties
+                                                   .Where(p => p.CustomAttributes.Any(a => a.AttributeType == typeof(RequiredAttribute)))
+                                                   .Select(p => p.Name);
+
+            var missingRequired = requiredProperties.FirstOrDefault(p => !command.Arguments.Any(a => a.Name.ToLowerInvariant() == p.ToLowerInvariant()));
+
+            if (missingRequired != null)
+            {
+                throw new MissingRequiredParameterException("Missing value for required property", command.Name, missingRequired);
+            }
         }
 
         private TypeInfo FindExecutableTypeWithValidation(TypeInfo[] executableTypes, Command command)

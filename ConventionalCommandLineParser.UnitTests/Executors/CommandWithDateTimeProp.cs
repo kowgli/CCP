@@ -2,7 +2,7 @@
 
 namespace ConventionalCommandLineParser.UnitTests.Executors
 {
-    public class CommandWithDateTimeArg : IExecutable
+    public class CommandWithDateTimeProp : IExecutable
     {
         public DateTime Arg1 { get; set; }
 

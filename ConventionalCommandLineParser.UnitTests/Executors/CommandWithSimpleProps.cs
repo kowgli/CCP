@@ -2,7 +2,7 @@
 
 namespace ConventionalCommandLineParser.UnitTests.Executors
 {
-    public class CommandWithSimpleArgs : IExecutable
+    public class CommandWithSimpleProps : IExecutable
     {
         public string Arg1 { get; set; }
 

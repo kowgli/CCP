@@ -15,7 +15,7 @@ namespace ConventionalCommandLineParser.UnitTests
         [TestMethod]
         public void HowToReadProperties()
         {
-            TypeInfo type = typeof(CommandWithSimpleArgs).GetTypeInfo();
+            TypeInfo type = typeof(CommandWithSimpleProps).GetTypeInfo();
 
             PropertyInfo[] props = type.DeclaredProperties.ToArray();
 
@@ -30,14 +30,14 @@ namespace ConventionalCommandLineParser.UnitTests
         [TestMethod]
         public void HowToSetPropertyOnDynamicallyCreatedObject()
         {
-            Type type = typeof(CommandWithSimpleArgs);          
+            Type type = typeof(CommandWithSimpleProps);          
 
             IExecutable instance = (IExecutable)Activator.CreateInstance(type);
 
             PropertyInfo arg1 = type.GetProperty("Arg1");
             arg1.SetValue(instance, "test value");
 
-            CommandWithSimpleArgs typed = (CommandWithSimpleArgs)instance;
+            CommandWithSimpleProps typed = (CommandWithSimpleProps)instance;
             Assert.AreEqual("test value", typed.Arg1);
         }
     }
