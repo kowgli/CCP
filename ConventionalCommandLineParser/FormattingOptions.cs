@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace ConventionalCommandLineParser
+namespace CCP
 {
     public class FormattingOptions
     {

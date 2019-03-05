@@ -1,34 +1,34 @@
-﻿using ConventionalCommandLineParser.Exceptions;
-using ConventionalCommandLineParser.Models;
+﻿using CCP.Exceptions;
+using CCP.Models;
 using System;
 using System.Collections.Generic;
 
-namespace ConventionalCommandLineParser.Utils
+namespace CCP.Utils
 {
     internal static class ArgumentsParser
     {
-        public static Command[] Parse(string[] args)
+        public static Operation[] Parse(string[] args)
         {
             if(args?.Length == 0)
             {
-                return new Command[0];
+                return new Operation[0];
             }
 
-            List<Command> commands = new List<Command>();
-            Command? command = null;
+            List<Operation> commands = new List<Operation>();
+            Operation? command = null;
 
             foreach (string arg in args)
             {
                 if(ArgumentIsCommand(arg))
                 {
-                    command = new Command(arg);
+                    command = new Operation(arg);
                     commands.Add(command);
                     continue;
                 }
 
                 if(command == null)
                 {
-                    throw new ArgumentsDontStartWithCommandException();
+                    throw new ParametersDontStartWithOperationException();
                 }
 
                 Argument argument = new Argument(arg);

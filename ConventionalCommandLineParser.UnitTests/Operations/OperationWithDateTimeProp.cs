@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace ConventionalCommandLineParser.UnitTests.Executors
+namespace CCP.UnitTests.Executors
 {
-    public class CommandWithDateTimeProp : IExecutable
+    public class OperationWithDateTimeProp : IOperation
     {
         public DateTime Arg1 { get; set; }
 

@@ -1,4 +1,4 @@
-﻿using ConventionalCommandLineParser.UnitTests.Executors;
+﻿using CCP.UnitTests.Executors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConventionalCommandLineParser.UnitTests
+namespace CCP.UnitTests
 {
     [TestClass]
     public class Exploratory
@@ -15,7 +15,7 @@ namespace ConventionalCommandLineParser.UnitTests
         [TestMethod]
         public void HowToReadProperties()
         {
-            TypeInfo type = typeof(CommandWithSimpleProps).GetTypeInfo();
+            TypeInfo type = typeof(OperationWithSimpleProps).GetTypeInfo();
 
             PropertyInfo[] props = type.DeclaredProperties.ToArray();
 
@@ -30,14 +30,14 @@ namespace ConventionalCommandLineParser.UnitTests
         [TestMethod]
         public void HowToSetPropertyOnDynamicallyCreatedObject()
         {
-            Type type = typeof(CommandWithSimpleProps);          
+            Type type = typeof(OperationWithSimpleProps);          
 
-            IExecutable instance = (IExecutable)Activator.CreateInstance(type);
+            IOperation instance = (IOperation)Activator.CreateInstance(type);
 
             PropertyInfo arg1 = type.GetProperty("Arg1");
             arg1.SetValue(instance, "test value");
 
-            CommandWithSimpleProps typed = (CommandWithSimpleProps)instance;
+            OperationWithSimpleProps typed = (OperationWithSimpleProps)instance;
             Assert.AreEqual("test value", typed.Arg1);
         }
     }

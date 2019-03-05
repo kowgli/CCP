@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace ConventionalCommandLineParser.UnitTests.Executors
+namespace CCP.UnitTests.Executors
 {
-    public class CommandWithSimpleProps : IExecutable
+    public class OperationWithSimpleProps : IOperation
     {
         public string Arg1 { get; set; }
 

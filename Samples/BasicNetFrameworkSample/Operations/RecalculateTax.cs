@@ -1,5 +1,5 @@
-﻿using ConventionalCommandLineParser;
-using ConventionalCommandLineParser.Attributes;
+﻿using CCP;
+using CCP.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BasicNetCoreSample.Operations
 {
-    public class RecalculateTax : IExecutable
+    public class RecalculateTax : IOperation
     {
         [Required]
         public int YearFrom { get; set; }

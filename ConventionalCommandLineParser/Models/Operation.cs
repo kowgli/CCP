@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 
-namespace ConventionalCommandLineParser.Models
+namespace CCP.Models
 {
-    internal class Command
+    internal class Operation
     {
         private List<Argument> arguments = new List<Argument>();
 
-        internal Command(string name)
+        internal Operation(string name)
         {
             this.Name = name ?? "";
         }

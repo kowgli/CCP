@@ -2,7 +2,7 @@
 
 [assembly: InternalsVisibleTo("ConventionalCommandLineParser.UnitTests")]
 
-namespace ConventionalCommandLineParser
+namespace CCP
 {
     
     internal class Config

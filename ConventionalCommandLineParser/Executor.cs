@@ -1,5 +1,5 @@
-﻿using ConventionalCommandLineParser.Exceptions;
-using ConventionalCommandLineParser.Models;
+﻿using CCP.Exceptions;
+using CCP.Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConventionalCommandLineParser
+namespace CCP
 {
     public static class Executor
     {       
@@ -19,25 +19,25 @@ namespace ConventionalCommandLineParser
             executableAssembly = executableAssembly ?? throw new ArgumentNullException(nameof(executableAssembly));
             args = args ?? throw new ArgumentNullException(nameof(args));
 
-            IExecutable[] executables = BuildExecutables(args, executableAssembly, formattingOptions);
+            IOperation[] executables = BuildOperations(args, executableAssembly, formattingOptions);
             ExecuteExecutables(executables);
         }
 
-        internal static IExecutable[] BuildExecutables(string[] args, Assembly executableAssembly, FormattingOptions formattingOptions)
+        internal static IOperation[] BuildOperations(string[] args, Assembly executableAssembly, FormattingOptions formattingOptions)
         {
-            List<IExecutable> result = new List<IExecutable>();
+            List<IOperation> result = new List<IOperation>();
 
             TypeInfo[] executableTypes = executableAssembly.DefinedTypes
-                                                           .Where(x => x.ImplementedInterfaces.Contains(typeof(IExecutable)))
+                                                           .Where(x => x.ImplementedInterfaces.Contains(typeof(IOperation)))
                                                            .ToArray();
 
-            Command[] parsedArguments = Utils.ArgumentsParser.Parse(args);
+            Operation[] parsedArguments = Utils.ArgumentsParser.Parse(args);
 
-            Utils.ExecutableBuilder executableBuilder = new Utils.ExecutableBuilder(formattingOptions);
+            Utils.OperationBuilder executableBuilder = new Utils.OperationBuilder(formattingOptions);
 
-            foreach(Command parsedArgument in parsedArguments)
+            foreach(Operation parsedArgument in parsedArguments)
             {
-                IExecutable instance = executableBuilder.CreateInstance(executableTypes, parsedArgument);
+                IOperation instance = executableBuilder.CreateInstance(executableTypes, parsedArgument);
 
                 result.Add(instance);
             }
@@ -45,9 +45,9 @@ namespace ConventionalCommandLineParser
             return result.ToArray();
         }
 
-        internal static void ExecuteExecutables(IExecutable[] executables)
+        internal static void ExecuteExecutables(IOperation[] executables)
         {
-            foreach(IExecutable executable in executables)
+            foreach(IOperation executable in executables)
             {
                 executable.Run();
             }

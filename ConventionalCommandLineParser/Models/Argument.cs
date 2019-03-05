@@ -1,6 +1,6 @@
-﻿using ConventionalCommandLineParser.Exceptions;
+﻿using CCP.Exceptions;
 
-namespace ConventionalCommandLineParser.Models
+namespace CCP.Models
 {
     internal class Argument
     {

@@ -1,41 +1,41 @@
-﻿using ConventionalCommandLineParser.Attributes;
-using ConventionalCommandLineParser.Exceptions;
-using ConventionalCommandLineParser.Models;
+﻿using CCP.Attributes;
+using CCP.Exceptions;
+using CCP.Models;
 using System;
 using System.Linq;
 using System.Reflection;
 
-namespace ConventionalCommandLineParser.Utils
+namespace CCP.Utils
 {
-    internal class ExecutableBuilder
+    internal class OperationBuilder
     {
         private ValueBuilder valueBuilder;
 
-        public ExecutableBuilder(FormattingOptions formatingOptions)
+        public OperationBuilder(FormattingOptions formatingOptions)
         {
             formatingOptions = formatingOptions ?? throw new ArgumentNullException(nameof(formatingOptions));
 
             valueBuilder = new ValueBuilder(formatingOptions.Locale, formatingOptions.DateFormat);
         }
 
-        public IExecutable CreateInstance(TypeInfo[] executableTypes, Command command)
+        public IOperation CreateInstance(TypeInfo[] operationTypes, Operation operation)
         {
-            executableTypes = executableTypes ?? throw new ArgumentNullException(nameof(executableTypes));
-            command = command ?? throw new ArgumentNullException(nameof(command));
-            TypeInfo executableType = FindExecutableTypeWithValidation(executableTypes, command);
+            operationTypes = operationTypes ?? throw new ArgumentNullException(nameof(operationTypes));
+            operation = operation ?? throw new ArgumentNullException(nameof(operation));
+            TypeInfo operationType = FindExecutableTypeWithValidation(operationTypes, operation);
 
-            ValidateRequiredProperties(executableType, command);
+            ValidateRequiredProperties(operationType, operation);
 
-            PropertyInfo[] availableProperties = FindPropertiesWithValidation(executableType, command);
+            PropertyInfo[] availableProperties = FindPropertiesWithValidation(operationType, operation);
 
-            IExecutable instance = (IExecutable)Activator.CreateInstance(executableType.AsType());
+            IOperation instance = (IOperation)Activator.CreateInstance(operationType.AsType());
 
-            SetPropertiesOnInstance(instance, command, availableProperties);
+            SetPropertiesOnInstance(instance, operation, availableProperties);
 
             return instance;
         }
 
-        private void ValidateRequiredProperties(TypeInfo executableType, Command command)
+        private void ValidateRequiredProperties(TypeInfo executableType, Operation command)
         {
             var requiredProperties = executableType.DeclaredProperties
                                                    .Where(p => p.CustomAttributes.Any(a => a.AttributeType == typeof(RequiredAttribute)))
@@ -45,11 +45,11 @@ namespace ConventionalCommandLineParser.Utils
 
             if (missingRequired != null)
             {
-                throw new MissingRequiredParameterException("Missing value for required property", command.Name, missingRequired);
+                throw new MissingRequiredArgumentException("Missing value for required property", command.Name, missingRequired);
             }
         }
 
-        private TypeInfo FindExecutableTypeWithValidation(TypeInfo[] executableTypes, Command command)
+        private TypeInfo FindExecutableTypeWithValidation(TypeInfo[] executableTypes, Operation command)
         {
             TypeInfo[] filteredExecutableTypes = executableTypes
                                                       .Where(t => t.Name.ToLowerInvariant() == command.Name.ToLowerInvariant())
@@ -57,17 +57,17 @@ namespace ConventionalCommandLineParser.Utils
 
             if (filteredExecutableTypes.Length == 0)
             {
-                throw new ExecutableNotFoundException(message: "Not found", executableName: command.Name);
+                throw new OperationNotFoundException(message: "Not found", executableName: command.Name);
             }
             else if (filteredExecutableTypes.Length > 1)
             {
-                throw new MultipleExecutablesFoundException(message: "Not found", executableName: command.Name);
+                throw new MultipleOperationsFoundException(message: "Not found", executableName: command.Name);
             }
 
             return filteredExecutableTypes[0];
         }
 
-        private PropertyInfo[] FindPropertiesWithValidation(TypeInfo typeInfo, Command command)
+        private PropertyInfo[] FindPropertiesWithValidation(TypeInfo typeInfo, Operation command)
         {
             PropertyInfo[] availableProperties = typeInfo.DeclaredProperties
                                                          .Where(p => p.CanWrite && p.SetMethod?.IsPublic == true)
@@ -79,18 +79,18 @@ namespace ConventionalCommandLineParser.Utils
 
                 if (count == 0)
                 {
-                    throw new PropertyNotFoundException(message: "Not found", propertyName: argument.Name);
+                    throw new ArgumentNotFoundException(message: "Not found", propertyName: argument.Name);
                 }
                 else if (count > 1)
                 {
-                    throw new MultiplePropertiesFoundException(message: "Multiple found", propertyName: argument.Name);
+                    throw new MultipleArgumentsFoundException(message: "Multiple found", propertyName: argument.Name);
                 }
             }
 
             return availableProperties;
         }
 
-        private void SetPropertiesOnInstance(IExecutable instance, Command command, PropertyInfo[] availableProperties)
+        private void SetPropertiesOnInstance(IOperation instance, Operation command, PropertyInfo[] availableProperties)
         {
             foreach (Argument argument in command.Arguments)
             {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConventionalCommandLineParser.UnitTests.Types
+namespace CCP.UnitTests.Types
 {
     public class SampleComplexType
     {

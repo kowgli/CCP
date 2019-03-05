@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConventionalCommandLineParser.UnitTests.Executors
+namespace CCP.UnitTests.Executors
 {
-    public class CommandForExecutionTest2 : IExecutable
+    public class OperationForExecutionTest1 : IOperation
     {
         public static int RunCount = 0;
 

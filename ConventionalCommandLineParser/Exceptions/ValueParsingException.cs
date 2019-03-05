@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConventionalCommandLineParser.Exceptions
+namespace CCP.Exceptions
 {
     public class ValueParsingException : Exception
     {

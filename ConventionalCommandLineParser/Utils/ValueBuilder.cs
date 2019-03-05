@@ -1,11 +1,11 @@
-﻿using ConventionalCommandLineParser.Exceptions;
-using ConventionalCommandLineParser.Models;
+﻿using CCP.Exceptions;
+using CCP.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace ConventionalCommandLineParser.Utils
+namespace CCP.Utils
 {
     internal class ValueBuilder
     {
