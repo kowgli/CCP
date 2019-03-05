@@ -161,5 +161,16 @@ namespace ConventionalCommandLineParser.UnitTests
                 Assert.AreEqual("Arg2", ex.ParameterName);
             }
         }
+
+        [TestMethod]
+        public void When_Asked_ExecutorIsExecuted()
+        {
+            string[] args = new string[] { nameof(CommandForExecutionTest1), nameof(CommandForExecutionTest1), nameof(CommandForExecutionTest2) };
+
+            Executor.ExecuteFromArgs(args, typeof(ExecutorTests).Assembly);
+
+            Assert.AreEqual(2, CommandForExecutionTest1.RunCount);
+            Assert.AreEqual(1, CommandForExecutionTest2.RunCount);
+        }
     }
 }

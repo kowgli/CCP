@@ -47,7 +47,10 @@ namespace ConventionalCommandLineParser
 
         internal static void ExecuteExecutables(IExecutable[] executables)
         {
-            
+            foreach(IExecutable executable in executables)
+            {
+                executable.Run();
+            }
         }
     }
 }
