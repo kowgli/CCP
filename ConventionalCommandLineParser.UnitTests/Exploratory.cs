@@ -1,4 +1,5 @@
 ﻿using CCP.UnitTests.Executors;
+using CCP.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,13 @@ namespace CCP.UnitTests
 
             OperationWithSimpleProps typed = (OperationWithSimpleProps)instance;
             Assert.AreEqual("test value", typed.Arg1);
+        }
+
+        [TestMethod]
+        public void DoesPrintHelp()
+        {
+            Type type = typeof(OperationWithSimpleProps);
+            string helpText = HelpTextBuilder.BuildHelpText(type.Assembly);
         }
     }
 }

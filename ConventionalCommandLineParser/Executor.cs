@@ -20,24 +20,24 @@ namespace CCP
             args = args ?? throw new ArgumentNullException(nameof(args));
 
             IOperation[] executables = BuildOperations(args, executableAssembly, formattingOptions);
-            ExecuteExecutables(executables);
+            ExecuteOperation(executables);
         }
 
-        internal static IOperation[] BuildOperations(string[] args, Assembly executableAssembly, FormattingOptions formattingOptions)
+        internal static IOperation[] BuildOperations(string[] args, Assembly operationsAssembly, FormattingOptions formattingOptions)
         {
             List<IOperation> result = new List<IOperation>();
 
-            TypeInfo[] executableTypes = executableAssembly.DefinedTypes
+            TypeInfo[] operationTypes = operationsAssembly.DefinedTypes
                                                            .Where(x => x.ImplementedInterfaces.Contains(typeof(IOperation)))
                                                            .ToArray();
 
             Operation[] parsedArguments = Utils.ArgumentsParser.Parse(args);
 
-            Utils.OperationBuilder executableBuilder = new Utils.OperationBuilder(formattingOptions);
+            Utils.OperationBuilder operationBuilder = new Utils.OperationBuilder(formattingOptions);
 
             foreach(Operation parsedArgument in parsedArguments)
             {
-                IOperation instance = executableBuilder.CreateInstance(executableTypes, parsedArgument);
+                IOperation instance = operationBuilder.CreateInstance(operationTypes, parsedArgument);
 
                 result.Add(instance);
             }
@@ -45,11 +45,11 @@ namespace CCP
             return result.ToArray();
         }
 
-        internal static void ExecuteExecutables(IOperation[] executables)
+        internal static void ExecuteOperation(IOperation[] operations)
         {
-            foreach(IOperation executable in executables)
+            foreach(IOperation operation in operations)
             {
-                executable.Run();
+                operation.Run();
             }
         }
     }

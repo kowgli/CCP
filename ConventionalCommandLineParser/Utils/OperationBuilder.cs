@@ -22,7 +22,7 @@ namespace CCP.Utils
         {
             operationTypes = operationTypes ?? throw new ArgumentNullException(nameof(operationTypes));
             operation = operation ?? throw new ArgumentNullException(nameof(operation));
-            TypeInfo operationType = FindExecutableTypeWithValidation(operationTypes, operation);
+            TypeInfo operationType = FindOperationTypeWithValidation(operationTypes, operation);
 
             ValidateRequiredProperties(operationType, operation);
 
@@ -35,9 +35,9 @@ namespace CCP.Utils
             return instance;
         }
 
-        private void ValidateRequiredProperties(TypeInfo executableType, Operation command)
+        private void ValidateRequiredProperties(TypeInfo operationType, Operation command)
         {
-            var requiredProperties = executableType.DeclaredProperties
+            var requiredProperties = operationType.DeclaredProperties
                                                    .Where(p => p.CustomAttributes.Any(a => a.AttributeType == typeof(RequiredAttribute)))
                                                    .Select(p => p.Name);
 
@@ -49,22 +49,22 @@ namespace CCP.Utils
             }
         }
 
-        private TypeInfo FindExecutableTypeWithValidation(TypeInfo[] executableTypes, Operation command)
+        private TypeInfo FindOperationTypeWithValidation(TypeInfo[] operationTypes, Operation command)
         {
-            TypeInfo[] filteredExecutableTypes = executableTypes
+            TypeInfo[] filteredOperationTypes = operationTypes
                                                       .Where(t => t.Name.ToLowerInvariant() == command.Name.ToLowerInvariant())
                                                       .ToArray();
 
-            if (filteredExecutableTypes.Length == 0)
+            if (filteredOperationTypes.Length == 0)
             {
                 throw new OperationNotFoundException(message: "Not found", executableName: command.Name);
             }
-            else if (filteredExecutableTypes.Length > 1)
+            else if (filteredOperationTypes.Length > 1)
             {
                 throw new MultipleOperationsFoundException(message: "Not found", executableName: command.Name);
             }
 
-            return filteredExecutableTypes[0];
+            return filteredOperationTypes[0];
         }
 
         private PropertyInfo[] FindPropertiesWithValidation(TypeInfo typeInfo, Operation command)
