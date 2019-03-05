@@ -1,4 +1,4 @@
-﻿namespace BasicNetCoreSample
+﻿namespace BasicNetFrameworkSample
 {
     internal class Program
     {

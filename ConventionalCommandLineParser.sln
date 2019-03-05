@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{672B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicNetCoreSample", "Samples\BasicNetCoreSample\BasicNetCoreSample.csproj", "{BD745257-E263-4B5C-B070-5E1C3016C1D2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicNetFrameworkSample", "Samples\BasicNetFrameworkSample\BasicNetFrameworkSample.csproj", "{01BF55A2-2C74-43C8-9B08-51E966588BF8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,12 +31,17 @@ Global
 		{BD745257-E263-4B5C-B070-5E1C3016C1D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD745257-E263-4B5C-B070-5E1C3016C1D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD745257-E263-4B5C-B070-5E1C3016C1D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01BF55A2-2C74-43C8-9B08-51E966588BF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01BF55A2-2C74-43C8-9B08-51E966588BF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01BF55A2-2C74-43C8-9B08-51E966588BF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01BF55A2-2C74-43C8-9B08-51E966588BF8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{BD745257-E263-4B5C-B070-5E1C3016C1D2} = {672BCD68-EFBA-4CDF-92ED-E6761E495679}
+		{01BF55A2-2C74-43C8-9B08-51E966588BF8} = {672BCD68-EFBA-4CDF-92ED-E6761E495679}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3218906E-BE10-4119-8D54-C6D360EAAEEB}
