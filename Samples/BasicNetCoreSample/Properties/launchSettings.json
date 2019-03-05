@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BasicNetCoreSample": {
+      "commandName": "Project",
+      "commandLineArgs": "RecalculateTax YearFrom=2015 YearTo=2017"
+    }
+  }
+}
