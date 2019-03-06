@@ -15,7 +15,7 @@ namespace ConventionalOperationLineParser.UnitTests
         {
             string[] args = new string[] { };
 
-            IOperation[] executables = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, FormattingOptions.Default);
+            IOperation[] executables = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
 
             Assert.AreEqual(0, executables.Length);
         }
@@ -25,7 +25,7 @@ namespace ConventionalOperationLineParser.UnitTests
         {
             string[] args = new string[] { nameof(OperationWithNoProps) };
 
-            IOperation[] executables = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, FormattingOptions.Default);
+            IOperation[] executables = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
 
             Assert.AreEqual(1, executables.Length);
             Assert.IsTrue(executables[0] is OperationWithNoProps);
@@ -36,7 +36,7 @@ namespace ConventionalOperationLineParser.UnitTests
         {
             string[] args = new string[] { nameof(OperationWithSimpleProps), "Arg1=test", "Arg2=3", "Arg3=123.45" };
 
-            IOperation[] executables = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, FormattingOptions.Default);
+            IOperation[] executables = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
 
             Assert.AreEqual(1, executables.Length);
             Assert.IsTrue(executables[0] is OperationWithSimpleProps);
@@ -53,7 +53,7 @@ namespace ConventionalOperationLineParser.UnitTests
         {
             string[] args = new string[] { nameof(OperationWithSimpleProps), "Arg1=test", "Arg2=3", "Arg3=123,45" };
 
-            var formattingOptions = FormattingOptions.Default;
+            var formattingOptions = Options.Default;
             formattingOptions.Locale = new CultureInfo("pl-PL");
 
             IOperation[] executables = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, formattingOptions);
@@ -79,7 +79,7 @@ namespace ConventionalOperationLineParser.UnitTests
 
             string[] args = new string[] { nameof(OperationWithComplexProp), $"Arg1={json}" };
 
-            IOperation[] executables = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, FormattingOptions.Default);
+            IOperation[] executables = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
 
             Assert.AreEqual(1, executables.Length);
             Assert.IsTrue(executables[0] is OperationWithComplexProp);
@@ -101,7 +101,7 @@ namespace ConventionalOperationLineParser.UnitTests
 
             string[] args = new string[] { nameof(OperationWithDateTimeProp), $"Arg1={dateTimeString}" };
 
-            IOperation[] executables = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, FormattingOptions.Default);
+            IOperation[] executables = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
 
             Assert.AreEqual(1, executables.Length);
             Assert.IsTrue(executables[0] is OperationWithDateTimeProp);
@@ -120,7 +120,7 @@ namespace ConventionalOperationLineParser.UnitTests
 
             string[] args = new string[] { nameof(OperationWithDateTimeProp), $"Arg1={dateTimeString}" };
 
-            FormattingOptions formattingOptions = new FormattingOptions
+            Options formattingOptions = new Options
             {
                 DateFormat = "yyyy-MM.dd"
             };
@@ -142,7 +142,7 @@ namespace ConventionalOperationLineParser.UnitTests
         {
             string[] args = new string[] { nameof(OperationWithDateTimeProp), $"Arg1=not_a_date" };
 
-            Assert.ThrowsException<ValueParsingException>(() => Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, FormattingOptions.Default));
+            Assert.ThrowsException<ValueParsingException>(() => Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default));
         }
 
         [TestMethod]
@@ -152,7 +152,7 @@ namespace ConventionalOperationLineParser.UnitTests
 
             try
             {
-                Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, FormattingOptions.Default);
+                Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
 
                 Assert.Fail("Should have thrown an exception");
             }

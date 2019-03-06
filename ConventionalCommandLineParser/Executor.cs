@@ -1,5 +1,6 @@
 ﻿using CCP.Exceptions;
 using CCP.Models;
+using CCP.Utils;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -12,18 +13,28 @@ namespace CCP
 {
     public static class Executor
     {       
-        public static void ExecuteFromArgs(string[] args, Assembly executableAssembly, FormattingOptions? formattingOptions = null)
+        public static void ExecuteFromArgs(string[] args, Assembly opearationsAssembly, Options? options = null)
         {
-            formattingOptions = formattingOptions ?? FormattingOptions.Default;
+            options = options ?? Options.Default;
 
-            executableAssembly = executableAssembly ?? throw new ArgumentNullException(nameof(executableAssembly));
+            opearationsAssembly = opearationsAssembly ?? throw new ArgumentNullException(nameof(opearationsAssembly));
             args = args ?? throw new ArgumentNullException(nameof(args));
 
-            IOperation[] executables = BuildOperations(args, executableAssembly, formattingOptions);
-            ExecuteOperation(executables);
+            IOperation[]? executables = null;
+            try
+            {
+                executables = BuildOperations(args, opearationsAssembly, options);
+            }
+            catch(Exception ex)
+            {
+                string helpText = HelpTextBuilder.BuildHelpText(opearationsAssembly, ex);
+                throw new CommandParsingException(helpText, ex);
+            }
+
+            ExecuteOperation(executables ?? new IOperation[0]);
         }
 
-        internal static IOperation[] BuildOperations(string[] args, Assembly operationsAssembly, FormattingOptions formattingOptions)
+        internal static IOperation[] BuildOperations(string[] args, Assembly operationsAssembly, Options options)
         {
             List<IOperation> result = new List<IOperation>();
 
@@ -33,7 +44,7 @@ namespace CCP
 
             Operation[] parsedArguments = Utils.ArgumentsParser.Parse(args);
 
-            Utils.OperationBuilder operationBuilder = new Utils.OperationBuilder(formattingOptions);
+            Utils.OperationBuilder operationBuilder = new Utils.OperationBuilder(options);
 
             foreach(Operation parsedArgument in parsedArguments)
             {

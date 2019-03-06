@@ -21,7 +21,7 @@ namespace CCP.Utils
             {
                 sbHelp.AppendLine("ERROR");
                 sbHelp.AppendLine("-----");
-                sbHelp.AppendLine(includingError.ToString());
+                sbHelp.AppendLine(includingError.Message);
                 sbHelp.AppendLine();
             }
 

@@ -2,12 +2,12 @@
 
 namespace CCP
 {
-    public class FormattingOptions
+    public class Options
     {
         public CultureInfo Locale { get; set; } = new CultureInfo("en-US");
 
         public string? DateFormat { get; set; } = null;
 
-        internal static FormattingOptions Default => new FormattingOptions();        
+        internal static Options Default => new Options(); 
     }
 }

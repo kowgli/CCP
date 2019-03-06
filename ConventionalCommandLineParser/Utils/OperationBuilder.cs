@@ -11,11 +11,11 @@ namespace CCP.Utils
     {
         private ValueBuilder valueBuilder;
 
-        public OperationBuilder(FormattingOptions formatingOptions)
+        public OperationBuilder(Options options)
         {
-            formatingOptions = formatingOptions ?? throw new ArgumentNullException(nameof(formatingOptions));
+            options = options ?? throw new ArgumentNullException(nameof(options));
 
-            valueBuilder = new ValueBuilder(formatingOptions.Locale, formatingOptions.DateFormat);
+            valueBuilder = new ValueBuilder(options.Locale, options.DateFormat);
         }
 
         public IOperation CreateInstance(TypeInfo[] operationTypes, Operation operation)
