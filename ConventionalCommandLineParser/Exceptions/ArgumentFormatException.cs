@@ -4,16 +4,13 @@ namespace CCP.Exceptions
 {
     public class ArgumentFormatException : Exception
     {
-        public ArgumentFormatException() : base()
+        public string WronglyFormattedArgument { get; private set; }
+
+        public ArgumentFormatException(string wronglyFormattedArgument)
         {
+            this.WronglyFormattedArgument = wronglyFormattedArgument ?? "";
         }
 
-        public ArgumentFormatException(string message) : base(message)
-        {
-        }
-
-        public ArgumentFormatException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
+        public override string Message => $"Argument {WronglyFormattedArgument} is not formatted correctly. The correct syntax is Arg=[value].";
     }
 }

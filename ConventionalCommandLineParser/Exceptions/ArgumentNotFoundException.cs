@@ -4,28 +4,15 @@ namespace CCP.Exceptions
 {
     public class ArgumentNotFoundException : Exception
     {
-        public string PropertyName { get; set; } = "";
+        public string OperationName { get; private set; }
+        public string ArgumentName { get; private set; }    
 
-        public ArgumentNotFoundException() : base()
+        public ArgumentNotFoundException(string operationName, string argumentName)
         {
+            this.OperationName = operationName ?? "";
+            this.ArgumentName = argumentName ?? "";
         }
 
-        public ArgumentNotFoundException(string message) : base(message)
-        {
-        }
-
-        public ArgumentNotFoundException(string message, string propertyName) : base(message)
-        {
-            this.PropertyName = propertyName ?? "";
-        }
-
-        public ArgumentNotFoundException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        public ArgumentNotFoundException(string message, Exception innerException, string propertyName) : base(message, innerException)
-        {
-            this.PropertyName = propertyName ?? "";
-        }
+        public override string Message => $"The argument {ArgumentName} is invalid for the operation {OperationName}.";
     }
 }

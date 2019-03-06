@@ -14,28 +14,28 @@ namespace CCP.Utils
                 return new Operation[0];
             }
 
-            List<Operation> commands = new List<Operation>();
-            Operation? command = null;
+            List<Operation> operations = new List<Operation>();
+            Operation? operation = null;
 
             foreach (string arg in args)
             {
                 if(ArgumentIsCommand(arg))
                 {
-                    command = new Operation(arg);
-                    commands.Add(command);
+                    operation = new Operation(arg);
+                    operations.Add(operation);
                     continue;
                 }
 
-                if(command == null)
+                if(operation == null)
                 {
                     throw new ParametersDontStartWithOperationException();
                 }
 
                 Argument argument = new Argument(arg);
-                command.AddArgument(argument);
+                operation.AddArgument(argument);
             }
 
-            return commands.ToArray();
+            return operations.ToArray();
         }
 
         private static bool ArgumentIsCommand(string argument)

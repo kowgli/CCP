@@ -4,16 +4,10 @@ namespace CCP.Exceptions
 {
     public class ParametersDontStartWithOperationException : Exception
     {
-        public ParametersDontStartWithOperationException() : base()
+        public ParametersDontStartWithOperationException()
         {
         }
 
-        public ParametersDontStartWithOperationException(string message) : base(message)
-        {
-        }
-
-        public ParametersDontStartWithOperationException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
+        public override string Message => "Parameters don't start with an operation name.";
     }
 }

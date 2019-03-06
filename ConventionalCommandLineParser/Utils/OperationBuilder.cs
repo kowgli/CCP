@@ -45,45 +45,45 @@ namespace CCP.Utils
 
             if (missingRequired != null)
             {
-                throw new MissingRequiredArgumentException("Missing value for required property", command.Name, missingRequired);
+                throw new MissingRequiredArgumentException(command.Name, missingRequired);
             }
         }
 
-        private TypeInfo FindOperationTypeWithValidation(TypeInfo[] operationTypes, Operation command)
+        private TypeInfo FindOperationTypeWithValidation(TypeInfo[] operationTypes, Operation operation)
         {
             TypeInfo[] filteredOperationTypes = operationTypes
-                                                      .Where(t => t.Name.ToLowerInvariant() == command.Name.ToLowerInvariant())
+                                                      .Where(t => t.Name.ToLowerInvariant() == operation.Name.ToLowerInvariant())
                                                       .ToArray();
 
             if (filteredOperationTypes.Length == 0)
             {
-                throw new OperationNotFoundException(message: "Not found", executableName: command.Name);
+                throw new OperationNotFoundException(operationName: operation.Name);
             }
             else if (filteredOperationTypes.Length > 1)
             {
-                throw new MultipleOperationsFoundException(message: "Not found", executableName: command.Name);
+                throw new MultipleOperationsFoundException(operationName: operation.Name);
             }
 
             return filteredOperationTypes[0];
         }
 
-        private PropertyInfo[] FindPropertiesWithValidation(TypeInfo typeInfo, Operation command)
+        private PropertyInfo[] FindPropertiesWithValidation(TypeInfo typeInfo, Operation operation)
         {
             PropertyInfo[] availableProperties = typeInfo.DeclaredProperties
                                                          .Where(p => p.CanWrite && p.SetMethod?.IsPublic == true)
                                                          .ToArray();
 
-            foreach (Argument argument in command.Arguments)
+            foreach (Argument argument in operation.Arguments)
             {
                 int count = availableProperties.Where(p => p.Name.ToLowerInvariant() == argument.Name.ToLowerInvariant()).Count();
 
                 if (count == 0)
                 {
-                    throw new ArgumentNotFoundException(message: "Not found", propertyName: argument.Name);
+                    throw new ArgumentNotFoundException(operationName: operation.Name, argumentName: argument.Name);
                 }
                 else if (count > 1)
                 {
-                    throw new MultipleArgumentsFoundException(message: "Multiple found", propertyName: argument.Name);
+                    throw new MultipleArgumentsFoundException(operationName: operation.Name, argumentName: argument.Name);
                 }
             }
 

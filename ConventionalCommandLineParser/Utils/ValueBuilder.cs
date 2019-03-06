@@ -73,10 +73,10 @@ namespace CCP.Utils
             }
             catch(Exception ex)
             {
-                throw new ValueParsingException($"Could not parse value \"{argument.Value}\" as {type}. See inner exception for the actual exception thrown.", ex);
+                throw new ValueParsingException(argumentValue: argument.Value, type: type, innerException: ex);
             }
 
-            throw new TypeNotSupportedException(message: "Not supported", type: type);            
+            throw new TypeNotSupportedException(type);            
         }
     }
 }

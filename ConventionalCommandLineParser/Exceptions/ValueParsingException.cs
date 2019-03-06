@@ -4,16 +4,15 @@ namespace CCP.Exceptions
 {
     public class ValueParsingException : Exception
     {
-        public ValueParsingException()
+        public string ArgumentValue { get; private set; }
+        public Type Type { get; private set; }
+
+        public ValueParsingException(string argumentValue, Type type, Exception innerException) : base("", innerException)
         {
+            this.ArgumentValue = argumentValue;
+            this.Type = type;
         }
 
-        public ValueParsingException(string message) : base(message)
-        {
-        }
-
-        public ValueParsingException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
+        public override string Message => $"Could not parse value \"{ArgumentValue}\" as {Type}.";
     }
 }

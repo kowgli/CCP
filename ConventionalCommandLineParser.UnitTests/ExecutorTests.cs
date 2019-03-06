@@ -158,8 +158,8 @@ namespace ConventionalOperationLineParser.UnitTests
             }
             catch(MissingRequiredArgumentException ex)
             {
-                Assert.AreEqual("OperationWithRequiredProp", ex.ExecutableName);
-                Assert.AreEqual("Arg2", ex.ParameterName);
+                Assert.AreEqual("OperationWithRequiredProp", ex.OperationName);
+                Assert.AreEqual("Arg2", ex.ArgumentName);
             }
         }
 

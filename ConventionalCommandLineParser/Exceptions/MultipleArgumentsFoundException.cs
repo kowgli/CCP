@@ -4,28 +4,15 @@ namespace CCP.Exceptions
 {
     public class MultipleArgumentsFoundException : Exception
     {
-        public string PropertyName { get; set; } = "";
+        public string OperationName { get; private set; }
+        public string ArgumentName { get; private set; }
 
-        public MultipleArgumentsFoundException() : base()
+        public MultipleArgumentsFoundException(string operationName, string argumentName) 
         {
+            this.OperationName = operationName ?? "";
+            this.ArgumentName = argumentName ?? "";
         }
 
-        public MultipleArgumentsFoundException(string message) : base(message)
-        {
-        }
-
-        public MultipleArgumentsFoundException(string message, string propertyName) : base(message)
-        {
-            this.PropertyName = propertyName ?? "";
-        }
-
-        public MultipleArgumentsFoundException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        public MultipleArgumentsFoundException(string message, Exception innerException, string propertyName) : base(message, innerException)
-        {
-            this.PropertyName = propertyName ?? "";
-        }
+        public override string Message => $"Argument {ArgumentName} on operation {OperationName} specified multiple times.";
     }
 }

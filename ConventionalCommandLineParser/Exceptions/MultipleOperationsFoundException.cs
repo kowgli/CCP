@@ -4,28 +4,14 @@ namespace CCP.Exceptions
 {
     public class MultipleOperationsFoundException : Exception
     {
-        public string ExecutableName { get; set; } = "";
+        public string OperationName { get; private set; }
 
-        public MultipleOperationsFoundException() : base()
+      
+        public MultipleOperationsFoundException(string operationName)
         {
+            this.OperationName = operationName ?? "";
         }
 
-        public MultipleOperationsFoundException(string message) : base(message)
-        {
-        }
-
-        public MultipleOperationsFoundException(string message, string executableName) : base(message)
-        {
-            this.ExecutableName = executableName ?? "";
-        }
-
-        public MultipleOperationsFoundException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        public MultipleOperationsFoundException(string message, Exception innerException, string executableName) : base(message, innerException)
-        {
-            this.ExecutableName = executableName ?? "";
-        }
+        public override string Message => $"Multiple operations named {OperationName} found.";
     }
 }

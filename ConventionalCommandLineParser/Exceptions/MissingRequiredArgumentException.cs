@@ -4,31 +4,15 @@ namespace CCP.Exceptions
 {
     public class MissingRequiredArgumentException : Exception
     {
-        public string ExecutableName { get; set; } = "";
-        public string ParameterName { get; set; } = "";
+        public string OperationName { get; private set; }
+        public string ArgumentName { get; private set; }
 
-        public MissingRequiredArgumentException() : base()
+        public MissingRequiredArgumentException( string operationName, string parameterName) 
         {
+            this.OperationName = operationName ?? "";
+            this.ArgumentName = parameterName ?? "";
         }
 
-        public MissingRequiredArgumentException(string message) : base(message)
-        {
-        }
-
-        public MissingRequiredArgumentException(string message, string executableName, string parameterName) : base(message)
-        {
-            this.ExecutableName = executableName ?? "";
-            this.ParameterName = parameterName ?? "";
-        }
-
-        public MissingRequiredArgumentException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        public MissingRequiredArgumentException(string message, Exception innerException, string executableName, string parameterName) : base(message, innerException)
-        {
-            this.ExecutableName = executableName ?? "";
-            this.ParameterName = parameterName ?? "";
-        }
+        public override string Message => $"The operation {OperationName} is missing the required argument {ArgumentName}";
     }
 }
