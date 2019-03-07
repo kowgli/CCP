@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Person.cs" />
     <Compile Include="Operations\RecalculateTax.cs" />
     <Compile Include="Operations\UpdateStatistics.cs" />
     <Compile Include="Program.cs" />
