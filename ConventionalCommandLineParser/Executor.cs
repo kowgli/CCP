@@ -20,10 +20,15 @@ namespace CCP
             opearationsAssembly = opearationsAssembly ?? throw new ArgumentNullException(nameof(opearationsAssembly));
             args = args ?? throw new ArgumentNullException(nameof(args));
 
-            IOperation[]? executables = null;
+            IOperation[]? operations = null;
             try
             {
-                executables = BuildOperations(args, opearationsAssembly, options);
+                operations = BuildOperations(args, opearationsAssembly, options);
+
+                if(operations.Length == 0)
+                {
+                    throw new NoOperationsException();
+                }
             }
             catch(Exception ex)
             {
@@ -31,7 +36,7 @@ namespace CCP
                 throw new CommandParsingException(helpText, ex);
             }
 
-            ExecuteOperation(executables ?? new IOperation[0]);
+            ExecuteOperations(operations ?? new IOperation[0]);
         }
 
         internal static IOperation[] BuildOperations(string[] args, Assembly operationsAssembly, Options options)
@@ -56,7 +61,7 @@ namespace CCP
             return result.ToArray();
         }
 
-        internal static void ExecuteOperation(IOperation[] operations)
+        internal static void ExecuteOperations(IOperation[] operations)
         {
             foreach(IOperation operation in operations)
             {

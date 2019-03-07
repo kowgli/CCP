@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CCP.Exceptions
+namespace CCP
 {
     public class CommandParsingException : Exception
     {

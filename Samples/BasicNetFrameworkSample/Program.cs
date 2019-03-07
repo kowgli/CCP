@@ -4,7 +4,14 @@
     {
         private static void Main(string[] args)
         {
-            CCP.Executor.ExecuteFromArgs(args, typeof(Program).Assembly);
+            try
+            {
+                CCP.Executor.ExecuteFromArgs(args, typeof(Program).Assembly);
+            }
+            catch(CCP.CommandParsingException cpe)
+            {
+                System.Console.WriteLine(cpe.Message);
+            }
         }
     }
 }

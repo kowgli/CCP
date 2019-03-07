@@ -43,7 +43,8 @@ namespace CCP.Utils
                                                    {
                                                        p.Name,
                                                        Required = p.CustomAttributes.Any(a => a.AttributeType == typeof(RequiredAttribute)),
-                                                       TypeName = p.PropertyType.Name
+                                                       TypeName = p.PropertyType.GenericTypeArguments.Length > 0 ? 
+                                                                  p.PropertyType.GenericTypeArguments[0].Name : p.PropertyType.Name
                                                    });
 
                 foreach (var property in properties)
