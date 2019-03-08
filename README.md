@@ -13,7 +13,7 @@ Looking at it with developer eyes, the syntax is basically:
 ```
 Class1 Property1=Value1 Property2=Value2 Class2 Property3=Value3    etc.
 ```  
-**There shoudn't be any spaces between the name and value of a property.**
+**There shoudn't be any spaces between the name and value of a property.** Strings with whitespace should be enclosed by double quotes, like `"hello world"`.
 
 There is no command line parsing specific code required. All you need is classes implementing the `IOperation` interface, which includes a single `Run` method.
 
@@ -63,6 +63,10 @@ Running RecalculateTax with YearFrom=2019, YearTo=
 ```
 
 That's it. This allows you to quickly create code that can be parameterized by the user.
+
+All the string comparisons done by CCP are **case insensitive**, so it doesn't matter if the user types `ReCALculateTAX yearFROM=2019` or `recalculatetax yearfrom=2019`
+
+**See** the `Samples` folder for more examples. 
 
 ## How to use it?
 
@@ -154,9 +158,19 @@ The following basic types found in the .NET framework are supported for properti
 - bool 
 - bool?
 
-Additionally **complex types can be used** if their value is provided in JSON format. In that case it will use [Json.NET](https://github.com/JamesNK/Newtonsoft.Json) to deserialize them.
+### Working with strings
 
-Strings have to be surrounded by double quotes, like `\"MyString\"`. **Spaces in strings are currently not supported.**
+When using a simple string type property it's value can be passed in two ways:
+1. If it's a single word (without whitespace) it can be assigned directly, like `MyStringProp=MyValue`. This will assign the value `"MyValue"` to `public string MyStringProp {get; set;}`.
+2. Strings containing whitespace need to be enclosed in double quotes like this `MyStringProp="My value"`. This will assign the value `"My value"` to `public string MyStringProp {get; set;}`.
+
+
+### Complex types
+
+CCP also supports complex types which should be provided in JSON format. It will use [Json.NET](https://github.com/JamesNK/Newtonsoft.Json) to deserialize them.
+
+
+
 
 So if you have:
 ```
@@ -182,8 +196,8 @@ public class DoSomething : IOperation
 
 It can be run through:
 ```
-MyApp.exe DoSomething Person={Name:\"John\",Age:123}
+MyApp.exe DoSomething Person={Name:"\"John Doe\"",Age:123}
 ```
 
-**Spaces in strings are currently not supported.**
+For valid JSON, strings need to be surrounded by double quotes, which makes the syntax a bit ugly. Also note there cannot be any whitespace between the values in the JSON.
 
