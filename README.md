@@ -130,7 +130,7 @@ There are a few simple configuration options, none of which is required.
 
 The first one is the `[CCP.Attributes.Required]` attribute. Which marks a property as required and will throw an error if a value was not provided by the user.
 
-The seccond is an optional `CCP.Options` class, an instance of which you can pass as a 3rd argument to the `CCP.Executor.ExecuteFromArgs` method. It has the following properties:
+The second is an optional `CCP.Options` class, an instance of which you can pass as a 3rd argument to the `CCP.Executor.ExecuteFromArgs` method. It has the following properties:
 * `Locale` - the locale which should be used to parse the arguments (like decimal separators etc.).
 The default is **en-US**, so without any configuration decimals should be separated using dots and dates should use the funny US format.
 This was done because english is the de-facto stadard for computing and the en-US locale is also default in most programming languages.
