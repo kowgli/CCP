@@ -1,5 +1,14 @@
 # Conventional Command line Parser (CCP)
-## Version 0.1
+
+## Installing via NuGet
+
+```
+Install-Package CCP
+```
+
+[NuGet link](https://www.nuget.org/packages/CCP)
+
+## Description
 
 Yet another command line argument parser for .NET. 
 What makes it different is that it's basically zero configuration and 100% reflection based.
