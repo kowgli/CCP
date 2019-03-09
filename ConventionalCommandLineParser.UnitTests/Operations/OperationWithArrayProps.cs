@@ -1,7 +1,7 @@
 ﻿using CCP;
 using CCP.UnitTests.Types;
 
-namespace ConventionalCommandLineParser.UnitTests.Operations
+namespace CCP.UnitTests.Executors
 {
     public class OperationWithArrayProps : IOperation
     {

@@ -5,7 +5,7 @@ namespace CCP.Models
 {
     internal class Argument
     {
-        private static string arraySeparator = ",";
+        private static string arraySeparator = ";";
 
         public Argument(string argument)
         {           

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("ConventionalCommandLineParser.UnitTests")]
+[assembly: InternalsVisibleTo("CCP.UnitTests")]
 
 namespace CCP
 {

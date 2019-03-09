@@ -188,7 +188,7 @@ namespace ConventionalOperationLineParser.UnitTests
         [TestMethod]
         public void When_ArgumentIsArray_Returns_ArgumentsWithCorrectValues()
         {
-            string[] args = new string[] { "TestOperation", "Arg1=aaa,bbb,ccc" };
+            string[] args = new string[] { "TestOperation", "Arg1=aaa;bbb;ccc" };
 
             Operation[] operations = ArgumentsParser.Parse(args);
 
@@ -201,12 +201,12 @@ namespace ConventionalOperationLineParser.UnitTests
         [TestMethod]
         public void When_ArgumentIsStringArrayWithSplitChar_Returns_ArgumentsWithCorrectValues()
         {
-            string[] args = new string[] { "TestOperation", "Arg1=\"aaa,aaa\",bbb,\"ccc\"" };
+            string[] args = new string[] { "TestOperation", "Arg1=\"aaa;aaa\";bbb;\"ccc\"" };
 
             Operation[] operations = ArgumentsParser.Parse(args);
 
             Assert.AreEqual(3, operations[0].Arguments[0].Values.Length);
-            Assert.AreEqual("\"aaa,aaa\"", operations[0].Arguments[0].Values[0]);
+            Assert.AreEqual("\"aaa;aaa\"", operations[0].Arguments[0].Values[0]);
             Assert.AreEqual("bbb", operations[0].Arguments[0].Values[1]);
             Assert.AreEqual("\"ccc\"", operations[0].Arguments[0].Values[2]);
         }

@@ -15,9 +15,9 @@ namespace ConventionalOperationLineParser.UnitTests
         {
             string[] args = new string[] { };
 
-            IOperation[] executables = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
 
-            Assert.AreEqual(0, executables.Length);
+            Assert.AreEqual(0, operations.Length);
         }
 
         [TestMethod]
@@ -25,10 +25,10 @@ namespace ConventionalOperationLineParser.UnitTests
         {
             string[] args = new string[] { nameof(OperationWithNoProps) };
 
-            IOperation[] executables = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
 
-            Assert.AreEqual(1, executables.Length);
-            Assert.IsTrue(executables[0] is OperationWithNoProps);
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsTrue(operations[0] is OperationWithNoProps);
         }
 
         [TestMethod]
@@ -36,12 +36,12 @@ namespace ConventionalOperationLineParser.UnitTests
         {
             string[] args = new string[] { nameof(OperationWithSimpleProps), "Arg1=test", "Arg2=3", "Arg3=123.45" };
 
-            IOperation[] executables = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
 
-            Assert.AreEqual(1, executables.Length);
-            Assert.IsTrue(executables[0] is OperationWithSimpleProps);
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsTrue(operations[0] is OperationWithSimpleProps);
 
-            OperationWithSimpleProps Operation = (OperationWithSimpleProps) executables[0];
+            OperationWithSimpleProps Operation = (OperationWithSimpleProps) operations[0];
 
             Assert.AreEqual("test", Operation.Arg1);
             Assert.AreEqual(3, Operation.Arg2);
@@ -56,12 +56,12 @@ namespace ConventionalOperationLineParser.UnitTests
             var formattingOptions = Options.Default;
             formattingOptions.Locale = new CultureInfo("pl-PL");
 
-            IOperation[] executables = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, formattingOptions);
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, formattingOptions);
 
-            Assert.AreEqual(1, executables.Length);
-            Assert.IsTrue(executables[0] is OperationWithSimpleProps);
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsTrue(operations[0] is OperationWithSimpleProps);
 
-            OperationWithSimpleProps Operation = (OperationWithSimpleProps)executables[0];
+            OperationWithSimpleProps Operation = (OperationWithSimpleProps)operations[0];
 
             Assert.AreEqual("test", Operation.Arg1);
             Assert.AreEqual(3, Operation.Arg2);
@@ -79,12 +79,12 @@ namespace ConventionalOperationLineParser.UnitTests
 
             string[] args = new string[] { nameof(OperationWithComplexProp), $"Arg1={json}" };
 
-            IOperation[] executables = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
 
-            Assert.AreEqual(1, executables.Length);
-            Assert.IsTrue(executables[0] is OperationWithComplexProp);
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsTrue(operations[0] is OperationWithComplexProp);
 
-            OperationWithComplexProp Operation = (OperationWithComplexProp)executables[0];
+            OperationWithComplexProp Operation = (OperationWithComplexProp)operations[0];
 
             Assert.IsNotNull(Operation.Arg1);
             Assert.AreEqual(123, Operation.Arg1.IntValue, "int value incorrect");
@@ -101,12 +101,12 @@ namespace ConventionalOperationLineParser.UnitTests
 
             string[] args = new string[] { nameof(OperationWithDateTimeProp), $"Arg1={dateTimeString}" };
 
-            IOperation[] executables = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
 
-            Assert.AreEqual(1, executables.Length);
-            Assert.IsTrue(executables[0] is OperationWithDateTimeProp);
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsTrue(operations[0] is OperationWithDateTimeProp);
 
-            OperationWithDateTimeProp Operation = (OperationWithDateTimeProp)executables[0];
+            OperationWithDateTimeProp Operation = (OperationWithDateTimeProp)operations[0];
 
             Assert.AreEqual(dateTime.Year, Operation.Arg1.Year, "year value incorrect");
             Assert.AreEqual(dateTime.Month, Operation.Arg1.Month, "month value incorrect");
@@ -125,12 +125,12 @@ namespace ConventionalOperationLineParser.UnitTests
                 DateFormat = "yyyy-MM.dd"
             };
 
-            IOperation[] executables = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, formattingOptions);
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, formattingOptions);
 
-            Assert.AreEqual(1, executables.Length);
-            Assert.IsTrue(executables[0] is OperationWithDateTimeProp);
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsTrue(operations[0] is OperationWithDateTimeProp);
 
-            OperationWithDateTimeProp Operation = (OperationWithDateTimeProp)executables[0];
+            OperationWithDateTimeProp Operation = (OperationWithDateTimeProp)operations[0];
 
             Assert.AreEqual(2015, Operation.Arg1.Year, "year value incorrect");
             Assert.AreEqual(2, Operation.Arg1.Month, "month value incorrect");
@@ -172,6 +172,63 @@ namespace ConventionalOperationLineParser.UnitTests
 
             Assert.AreEqual(2, OperationForExecutionTest1.RunCount);
             Assert.AreEqual(1, OperationForExecutionTest2.RunCount);
+        }
+
+        [TestMethod]
+        public void When_StringArrayProperty_PropertyValuesAreSet()
+        {
+            string[] args = new string[] { nameof(OperationWithArrayProps), $"StringArray=aaa;bbb;ccc" };
+
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsInstanceOfType(operations[0], typeof(OperationWithArrayProps));
+
+            OperationWithArrayProps operation = (OperationWithArrayProps)operations[0];
+
+            Assert.AreEqual("aaa", operation.StringArray[0]);
+            Assert.AreEqual("bbb", operation.StringArray[1]);
+            Assert.AreEqual("ccc", operation.StringArray[2]);
+        }
+
+        [TestMethod]
+        public void When_IntArrayProperty_PropertyValuesAreSet()
+        {
+            string[] args = new string[] { nameof(OperationWithArrayProps), $"IntArray=1;2;3" };
+
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsInstanceOfType(operations[0], typeof(OperationWithArrayProps));
+
+            OperationWithArrayProps operation = (OperationWithArrayProps)operations[0];
+
+            Assert.AreEqual(1, operation.IntArray[0]);
+            Assert.AreEqual(2, operation.IntArray[1]);
+            Assert.AreEqual(3, operation.IntArray[2]);
+        }
+
+        [TestMethod]
+        public void When_ComplextArrayProperty_PropertyValuesAreSet()
+        {
+            string json = @"{
+                IntValue: 123,
+                StringValue: ""hello world"",
+                BoolValue: true
+            }";
+
+            string[] args = new string[] { nameof(OperationWithArrayProps), $"ComplexArray={json};{json};{json}" };
+
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsInstanceOfType(operations[0], typeof(OperationWithArrayProps));
+
+            OperationWithArrayProps operation = (OperationWithArrayProps)operations[0];
+
+            Assert.AreEqual(123, operation.ComplexArray[0].IntValue);
+            Assert.AreEqual("hello world", operation.ComplexArray[1].StringValue);
+            Assert.AreEqual(true, operation.ComplexArray[2].BoolValue);
         }
     }
 }

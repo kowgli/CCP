@@ -4,6 +4,10 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <AssemblyName>CCP.UnitTests</AssemblyName>
+
+    <RootNamespace>CCP.UnitTests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

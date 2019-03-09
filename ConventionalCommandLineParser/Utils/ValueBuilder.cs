@@ -60,6 +60,11 @@ namespace CCP.Utils
         {
             try
             {
+                if(type.IsArray)
+                {
+                    return ParseAsArray(type, argument);
+                }
+
                 var parsers = GetDefaultParsers();
                 if (parsers.ContainsKey(type))
                 {
@@ -77,6 +82,20 @@ namespace CCP.Utils
             }
 
             throw new TypeNotSupportedException(type);            
+        }
+
+        private object ParseAsArray(Type type, Argument argument)
+        {
+            Type actualType = type.GetElementType();
+
+            Array result = Array.CreateInstance(actualType, argument.Values.Length);
+
+            for(int i = 0; i < argument.Values.Length; i++)
+            {
+                result.SetValue(GetValue(actualType, new Argument($"{argument.Name}={argument.Values[i]}")), i);
+            }
+
+            return result;
         }
     }
 }

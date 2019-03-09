@@ -43,6 +43,17 @@ namespace CCP.UnitTests
         }
 
         [TestMethod]
+        public void HowToDetectAnArrayThroughReflection()
+        {
+            Type type = typeof(OperationWithArrayProps);
+
+            var props = type.GetProperties();
+
+            Assert.IsTrue(props[0].PropertyType.IsArray);
+            Assert.AreEqual(typeof(string), props[0].PropertyType.GetElementType());
+        }
+
+        [TestMethod]
         public void DoesPrintHelp()
         {
             Type type = typeof(OperationWithSimpleProps);
