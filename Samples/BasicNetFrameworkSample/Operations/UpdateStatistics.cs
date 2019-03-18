@@ -7,9 +7,11 @@ namespace BasicNetFrameworkSample.Operations
     {
         public string Name { get; set; }
 
+        public int[] Numbers { get; set; }
+
         public void Run()
         {
-            Console.WriteLine($"Updating statistic {Name}");
+            Console.WriteLine($"Updating statistic {Name}, with numbers {String.Join(", ", Numbers)}.");
         }
     }
 }
