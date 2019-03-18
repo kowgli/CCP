@@ -209,6 +209,25 @@ namespace ConventionalOperationLineParser.UnitTests
         }
 
         [TestMethod]
+        public void When_IntArrayProperty_WithCustomSeparator_PropertyValuesAreSet()
+        {
+            string[] args = new string[] { nameof(OperationWithArrayProps), $"IntArray=1$2$3" };
+
+            var options = Options.Default;
+            options.ArrayElementSeparator = '$';
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, options);
+
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsInstanceOfType(operations[0], typeof(OperationWithArrayProps));
+
+            OperationWithArrayProps operation = (OperationWithArrayProps)operations[0];
+
+            Assert.AreEqual(1, operation.IntArray[0]);
+            Assert.AreEqual(2, operation.IntArray[1]);
+            Assert.AreEqual(3, operation.IntArray[2]);
+        }
+
+        [TestMethod]
         public void When_ComplextArrayProperty_PropertyValuesAreSet()
         {
             string json = @"{

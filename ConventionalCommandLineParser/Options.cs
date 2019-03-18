@@ -8,6 +8,8 @@ namespace CCP
 
         public string? DateFormat { get; set; } = null;
 
+        public char ArrayElementSeparator { get; set; } = ';';
+
         internal static Options Default => new Options(); 
     }
 }

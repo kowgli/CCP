@@ -7,7 +7,7 @@ namespace CCP.Utils
 {
     internal static class ArgumentsParser
     {
-        public static Operation[] Parse(string[] args)
+        public static Operation[] Parse(string[] args, char arraySeparator)
         {
             if(args?.Length == 0)
             {
@@ -31,7 +31,7 @@ namespace CCP.Utils
                     throw new ParametersDontStartWithOperationException();
                 }
 
-                Argument argument = new Argument(arg);
+                Argument argument = new Argument(arg, arraySeparator);
                 operation.AddArgument(argument);
             }
 

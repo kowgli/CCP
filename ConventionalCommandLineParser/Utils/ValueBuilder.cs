@@ -9,13 +9,15 @@ namespace CCP.Utils
 {
     internal class ValueBuilder
     {
-        private CultureInfo locale;
-        private string? dateFormat;
+        private readonly CultureInfo locale;
+        private readonly string? dateFormat;
+        private readonly char arraySeparator;
 
-        public ValueBuilder(CultureInfo locale, string? dateFormat)
+        public ValueBuilder(CultureInfo locale, string? dateFormat, char arraySeparator)
         {
             this.locale = locale ?? throw new ArgumentNullException(nameof(locale));
             this.dateFormat = dateFormat;
+            this.arraySeparator = arraySeparator;
         }
 
         private Dictionary<Type, Func<string, object>> GetDefaultParsers()
@@ -92,7 +94,7 @@ namespace CCP.Utils
 
             for(int i = 0; i < argument.Values.Length; i++)
             {
-                result.SetValue(GetValue(actualType, new Argument($"{argument.Name}={argument.Values[i]}")), i);
+                result.SetValue(GetValue(actualType, new Argument($"{argument.Name}={argument.Values[i]}", arraySeparator)), i);
             }
 
             return result;

@@ -12,7 +12,7 @@ namespace ConventionalOperationLineParser.UnitTests
         {
             string[] args = new string[0];
 
-            Operation[] operations = ArgumentsParser.Parse(args);
+            Operation[] operations = ArgumentsParser.Parse(args, ';');
 
             Assert.AreEqual(0, operations.Length);
         }
@@ -22,7 +22,7 @@ namespace ConventionalOperationLineParser.UnitTests
         {
             string[] args = new string[] { "TestOperation" };
 
-            Operation[] operations = ArgumentsParser.Parse(args);
+            Operation[] operations = ArgumentsParser.Parse(args, ';');
 
             Assert.AreEqual(1, operations.Length);
             Assert.AreEqual("TestOperation", operations[0].Name);
@@ -33,7 +33,7 @@ namespace ConventionalOperationLineParser.UnitTests
         {
             string[] args = new string[] { "TestOperation" };
 
-            Operation[] operations = ArgumentsParser.Parse(args);
+            Operation[] operations = ArgumentsParser.Parse(args, ';');
 
             Assert.AreEqual(0, operations[0].Arguments.Length);
         }
@@ -43,7 +43,7 @@ namespace ConventionalOperationLineParser.UnitTests
         {
             string[] args = new string[] { "TestOperation1", "TestOperation2", "TestOperation3" };
 
-            Operation[] operations = ArgumentsParser.Parse(args);
+            Operation[] operations = ArgumentsParser.Parse(args, ';');
 
             Assert.AreEqual(3, operations.Length);
             Assert.AreEqual("TestOperation1", operations[0].Name);
@@ -56,7 +56,7 @@ namespace ConventionalOperationLineParser.UnitTests
         {
             string[] args = new string[] { "TestOperation1", "TestOperation2", "TestOperation3" };
 
-            Operation[] operations = ArgumentsParser.Parse(args);
+            Operation[] operations = ArgumentsParser.Parse(args, ';');
 
             Assert.AreEqual(0, operations[0].Arguments.Length);
             Assert.AreEqual(0, operations[1].Arguments.Length);
@@ -68,7 +68,7 @@ namespace ConventionalOperationLineParser.UnitTests
         {
             string[] args = new string[] { "TestOperation", "Arg1=123" };
 
-            Operation[] operations = ArgumentsParser.Parse(args);
+            Operation[] operations = ArgumentsParser.Parse(args, ';');
 
             Assert.AreEqual(1, operations[0].Arguments.Length);
             Assert.AreEqual("Arg1", operations[0].Arguments[0].Name);
@@ -79,7 +79,7 @@ namespace ConventionalOperationLineParser.UnitTests
         {
             string[] args = new string[] { "TestOperation", "Arg1=123" };
 
-            Operation[] operations = ArgumentsParser.Parse(args);
+            Operation[] operations = ArgumentsParser.Parse(args, ';');
 
             Assert.AreEqual(1, operations[0].Arguments.Length);
             Assert.AreEqual("123", operations[0].Arguments[0].Value);
@@ -90,7 +90,7 @@ namespace ConventionalOperationLineParser.UnitTests
         {
             string[] args = new string[] { "TestOperation", "Arg1=123", "Arg2=aaaa", "Arg3=\"aaa bbbb\"" };
 
-            Operation[] operations = ArgumentsParser.Parse(args);
+            Operation[] operations = ArgumentsParser.Parse(args, ';');
 
             Assert.AreEqual(3, operations[0].Arguments.Length);
             Assert.AreEqual("Arg1", operations[0].Arguments[0].Name);
@@ -103,7 +103,7 @@ namespace ConventionalOperationLineParser.UnitTests
         {
             string[] args = new string[] { "TestOperation", "Arg1=123", "Arg2=aaaa", "Arg3=\"aaa bbbb\"" };
 
-            Operation[] operations = ArgumentsParser.Parse(args);
+            Operation[] operations = ArgumentsParser.Parse(args, ';');
 
             Assert.AreEqual(3, operations[0].Arguments.Length);
             Assert.AreEqual("123", operations[0].Arguments[0].Value);
@@ -116,7 +116,7 @@ namespace ConventionalOperationLineParser.UnitTests
         {
             string[] args = new string[] { "TestOperation", "Arg1=123", "Arg2=aaaa", "Arg3=\"aaa bbbb\"", "TestOperation2", "Arg4=xxx", "Arg5={test:123}" };
 
-            Operation[] operations = ArgumentsParser.Parse(args);
+            Operation[] operations = ArgumentsParser.Parse(args, ';');
 
             Assert.AreEqual(3, operations[0].Arguments.Length);
             Assert.AreEqual("Arg1", operations[0].Arguments[0].Name);
@@ -133,7 +133,7 @@ namespace ConventionalOperationLineParser.UnitTests
         {
             string[] args = new string[] { "TestOperation", "Arg1=123", "Arg2=aaaa", "Arg3=\"aaa bbbb\"", "TestOperation2", "Arg4=xxx", "Arg5={test:123}" };
 
-            Operation[] operations = ArgumentsParser.Parse(args);
+            Operation[] operations = ArgumentsParser.Parse(args, ';');
 
             Assert.AreEqual(3, operations[0].Arguments.Length);
             Assert.AreEqual("123", operations[0].Arguments[0].Value);
@@ -150,7 +150,7 @@ namespace ConventionalOperationLineParser.UnitTests
         {
             string[] args = new string[] { "TestOperation", "Arg1=123", "Arg2=aaaa", "Arg3=\"aaa bbbb\"" };
 
-            Operation[] operations = ArgumentsParser.Parse(args);
+            Operation[] operations = ArgumentsParser.Parse(args, ';');
 
             Assert.IsTrue(operations[0].Arguments[2].IsLiteralString);
         }
@@ -160,7 +160,7 @@ namespace ConventionalOperationLineParser.UnitTests
         {
             string[] args = new string[] { "TestOperation", "Arg1=123", "Arg2=aaaa", "Arg3=\"aaa bbbb\"" };
 
-            Operation[] operations = ArgumentsParser.Parse(args);
+            Operation[] operations = ArgumentsParser.Parse(args, ';');
 
             Assert.IsFalse(operations[0].Arguments[1].IsLiteralString);
         }
@@ -170,7 +170,7 @@ namespace ConventionalOperationLineParser.UnitTests
         {
             string[] args = new string[] { "TestOperation", "Arg1=123", "Arg2=aaaa", "Arg3={test:123}" };
 
-            Operation[] operations = ArgumentsParser.Parse(args);
+            Operation[] operations = ArgumentsParser.Parse(args, ';');
 
             Assert.IsTrue(operations[0].Arguments[2].IsPotentialJson);
         }
@@ -180,7 +180,7 @@ namespace ConventionalOperationLineParser.UnitTests
         {
             string[] args = new string[] { "TestOperation", "Arg1=123", "Arg2=aaaa", "Arg3=\"aaa bbbb\"" };
 
-            Operation[] operations = ArgumentsParser.Parse(args);
+            Operation[] operations = ArgumentsParser.Parse(args, ';');
 
             Assert.IsFalse(operations[0].Arguments[1].IsPotentialJson);
         }
@@ -190,7 +190,7 @@ namespace ConventionalOperationLineParser.UnitTests
         {
             string[] args = new string[] { "TestOperation", "Arg1=aaa;bbb;ccc" };
 
-            Operation[] operations = ArgumentsParser.Parse(args);
+            Operation[] operations = ArgumentsParser.Parse(args, ';');
 
             Assert.AreEqual(3, operations[0].Arguments[0].Values.Length);
             Assert.AreEqual("aaa", operations[0].Arguments[0].Values[0]);
@@ -203,10 +203,23 @@ namespace ConventionalOperationLineParser.UnitTests
         {
             string[] args = new string[] { "TestOperation", "Arg1=\"aaa;aaa\";bbb;\"ccc\"" };
 
-            Operation[] operations = ArgumentsParser.Parse(args);
+            Operation[] operations = ArgumentsParser.Parse(args, ';');
 
             Assert.AreEqual(3, operations[0].Arguments[0].Values.Length);
             Assert.AreEqual("\"aaa;aaa\"", operations[0].Arguments[0].Values[0]);
+            Assert.AreEqual("bbb", operations[0].Arguments[0].Values[1]);
+            Assert.AreEqual("\"ccc\"", operations[0].Arguments[0].Values[2]);
+        }
+
+        [TestMethod]
+        public void When_ArgumentIsStringArrayWithNonStandardSplitChar_Returns_ArgumentsWithCorrectValues()
+        {
+            string[] args = new string[] { "TestOperation", "Arg1=\"aaa#aaa\"#bbb#\"ccc\"" };
+
+            Operation[] operations = ArgumentsParser.Parse(args, '#');
+
+            Assert.AreEqual(3, operations[0].Arguments[0].Values.Length);
+            Assert.AreEqual("\"aaa#aaa\"", operations[0].Arguments[0].Values[0]);
             Assert.AreEqual("bbb", operations[0].Arguments[0].Values[1]);
             Assert.AreEqual("\"ccc\"", operations[0].Arguments[0].Values[2]);
         }

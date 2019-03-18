@@ -47,7 +47,7 @@ namespace CCP
                                                            .Where(x => x.ImplementedInterfaces.Contains(typeof(IOperation)))
                                                            .ToArray();
 
-            Operation[] parsedArguments = Utils.ArgumentsParser.Parse(args);
+            Operation[] parsedArguments = Utils.ArgumentsParser.Parse(args, options.ArrayElementSeparator);
 
             Utils.OperationBuilder operationBuilder = new Utils.OperationBuilder(options);
 

@@ -14,7 +14,7 @@ Yet another command line argument parser for .NET.
 What makes it different is that it's basically zero configuration and 100% reflection based.
 From a high level it works almost like a deserializer. It creates instances of classes based on the parameters supplied by the user and then runs them.
 
-It is higly based on code and argument syntax conventions in order to minimalize (or even remove) and configuration code. 
+It is highly based on code and argument syntax conventions in order to minimize (or even remove) and configuration code. 
 Yes, it doesn't follow popular syntax for command line arguments, but I've assumed that as a developer of an application you can define those as you wish 
 and what's supported is simple and easy to understand.
 
@@ -100,7 +100,7 @@ private static void Main(string[] args)
 1. The actual arguments of the application
 2. The assembly in which it should look for the "runnable" classes implementing the `IOperation` interface.
 
-If anything bad happens during parsing (**but not execution - it doesn't catch application specfic exceptions**), it will throw an `CommandParsingException`. 
+If anything bad happens during parsing (**but not execution - it doesn't catch application specific exceptions**), it will throw an `CommandParsingException`. 
 This has two properties of interest:
 
 1. The `Message` will contain a short description of the possible arguments and details of any parsing error (to be shown to the user).
@@ -133,8 +133,9 @@ The first one is the `[CCP.Attributes.Required]` attribute. Which marks a proper
 The second is an optional `CCP.Options` class, an instance of which you can pass as a 3rd argument to the `CCP.Executor.ExecuteFromArgs` method. It has the following properties:
 * `Locale` - the locale which should be used to parse the arguments (like decimal separators etc.).
 The default is **en-US**, so without any configuration decimals should be separated using dots and dates should use the funny US format.
-This was done because english is the de-facto stadard for computing and the en-US locale is also default in most programming languages.
+This was done because English is the de facto standard for computing and the en-US locale is also default in most programming languages.
 * `DateFormat` - optional "hard coded" date format to be used for parsing dates (using `DateTime.ParseExact`). This could have a value like `"yyyy-MM-dd"` if you prefer the most logical format.
+* `ArrayElementSeparator` - defines the separator used to separate array elements. The default value is a semicolon `;`.
 
 ## Supported data types
 The following basic types found in the .NET framework are supported for properties:
@@ -166,6 +167,11 @@ The following basic types found in the .NET framework are supported for properti
 - char?
 - bool 
 - bool?
+
+### Arrays
+
+As of version 1.1 arrays are also supported. The default separator for array elements is a semicolon `;`, but it can be changed in the options. A semicolon was chosen instead of a comma `,` because it conflicts less with JSON used for complex types. 
+If someone is able to come up with a clever regular expressions which can split a string into chunks, not only ignoring string literals (enclosed in double quotes (`"my text; another text"`) but also the character inside JSON expressions - please make a PR.
 
 ### Working with strings
 
@@ -208,5 +214,5 @@ It can be run through:
 MyApp.exe DoSomething Person={Name:"\"John Doe\"",Age:123}
 ```
 
-For valid JSON, strings need to be surrounded by double quotes, which makes the syntax a bit ugly. Also note there cannot be any whitespace between the values in the JSON.
+Note there cannot be any whitespace between the values in the JSON. Instead of using double quotes, you can also use single quotes inside JSON, which might make it a bit cleaner.
 

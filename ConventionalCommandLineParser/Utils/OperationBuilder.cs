@@ -15,7 +15,7 @@ namespace CCP.Utils
         {
             options = options ?? throw new ArgumentNullException(nameof(options));
 
-            valueBuilder = new ValueBuilder(options.Locale, options.DateFormat);
+            valueBuilder = new ValueBuilder(options.Locale, options.DateFormat, options.ArrayElementSeparator);
         }
 
         public IOperation CreateInstance(TypeInfo[] operationTypes, Operation operation)

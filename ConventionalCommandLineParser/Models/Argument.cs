@@ -5,10 +5,8 @@ namespace CCP.Models
 {
     internal class Argument
     {
-        private static string arraySeparator = ";";
-
-        public Argument(string argument)
-        {           
+        public Argument(string argument, char arraySeparator)
+        {
             string[] split = (argument ?? "").Split('=');
             if(split.Length != 2)
             {
@@ -27,16 +25,16 @@ namespace CCP.Models
         public bool IsLiteralString => Value?.StartsWith("\"") ?? false;
         public bool IsArray { get; private set; }
 
-        private string[] SplitIntoArray(string value, string separatorChar)
+        private string[] SplitIntoArray(string value, char arraySeparator)
         {
-            if(!value.Contains(arraySeparator))
+            if(!value.Contains(arraySeparator.ToString()))
             {
                 return new[] { this.Value };
             }
-
+       
             // Got help from here: https://stackoverflow.com/questions/3147836/c-sharp-regex-split-commas-outside-quotes
             // Thanks Jens!
-            Regex splitter = new Regex(separatorChar + "(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
+            Regex splitter = new Regex(Regex.Escape(arraySeparator.ToString()) + "(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
             return splitter.Split(value);
         }
     }
