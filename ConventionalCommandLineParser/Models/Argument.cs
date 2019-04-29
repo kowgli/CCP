@@ -7,7 +7,7 @@ namespace CCP.Models
     {
         public Argument(string argument, char arraySeparator)
         {
-            string[] split = (argument ?? "").Split('=');
+            string[] split = (argument ?? "").Split(new char[] { '=' }, 2);
             if(split.Length != 2)
             {
                 throw new ArgumentFormatException(argument);

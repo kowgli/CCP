@@ -223,5 +223,19 @@ namespace ConventionalOperationLineParser.UnitTests
             Assert.AreEqual("bbb", operations[0].Arguments[0].Values[1]);
             Assert.AreEqual("\"ccc\"", operations[0].Arguments[0].Values[2]);
         }
+
+        [TestMethod]
+        public void When_ArgumentIsStringWithQuotes_ItsCorrectlyParsed()
+        {
+            string connectionString = "AuthType=AD;Url=http://srv/org;Domain=domain;Username=administrator;Password=MyPassword";
+            string[] args = new string[] { "TestOperation", $"ConnectionString={connectionString}" };
+
+            Operation[] operations = ArgumentsParser.Parse(args, '#');
+
+            Assert.AreEqual(1, operations.Length);
+            Assert.AreEqual(1, operations[0].Arguments.Length);
+            Assert.AreEqual("ConnectionString", operations[0].Arguments[0].Name);
+            Assert.AreEqual(connectionString, operations[0].Arguments[0].Value);
+        }
     }
 }
