@@ -388,5 +388,20 @@ namespace ConventionalOperationLineParser.UnitTests
 
             Assert.AreEqual(123, operation.Number);
         }
+
+        [TestMethod]
+        public void When_PropertyAlias_IsRequired__Is_CorrectlyIdentifiedAndSet()
+        {
+            string[] args = new string[] { "OperationWithAliasedRequiredProp", "nr=123" };
+
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsInstanceOfType(operations[0], typeof(OperationWithAliasedRequiredProp));
+
+            OperationWithAliasedRequiredProp operation = (OperationWithAliasedRequiredProp)operations[0];
+
+            Assert.AreEqual(123, operation.Number);
+        }
     }
 }

@@ -39,13 +39,18 @@ namespace CCP.Utils
         {
             var requiredProperties = operationType.DeclaredProperties
                                                    .Where(p => p.CustomAttributes.Any(a => a.AttributeType == typeof(RequiredAttribute)))
-                                                   .Select(p => p.Name);
+                                                   .Select(p => p);
 
-            var missingRequired = requiredProperties.FirstOrDefault(p => !command.Arguments.Any(a => a.Name.ToLowerInvariant() == p.ToLowerInvariant()));
+            var missingRequired = requiredProperties.FirstOrDefault(rp => 
+                !command.Arguments.Any(arg => 
+                    arg.Name.ToLowerInvariant() == rp.Name.ToLowerInvariant()
+                    || rp.GetCustomAttributes<AliasAttribute>().Any(attr => attr.Name.ToLowerInvariant() == arg.Name.ToLowerInvariant())
+                )
+            );
 
             if (missingRequired != null)
             {
-                throw new MissingRequiredArgumentException(command.Name, missingRequired);
+                throw new MissingRequiredArgumentException(command.Name, missingRequired.Name);
             }
         }
 
