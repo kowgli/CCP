@@ -2,7 +2,7 @@
 
 namespace CCP.Attributes
 {
-    [AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
     public sealed class RequiredAttribute : Attribute
     {
     }
