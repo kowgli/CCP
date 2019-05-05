@@ -13,7 +13,7 @@ Install-Package CCP
 ### Version 1.3: 
 
 1. ```Guid```, ```Nullable<Guid>``` and ```Nullable<DateTime>``` support.
-1. Operation alias support.
+1. Operation and property alias support.
 
 ## Description
 
