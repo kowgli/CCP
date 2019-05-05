@@ -1,4 +1,4 @@
-﻿namespace CCP.UnitTests.Executors
+﻿namespace CCP.UnitTests.Operations
 {
     public class OperationWithNoProps : IOperation
     {       

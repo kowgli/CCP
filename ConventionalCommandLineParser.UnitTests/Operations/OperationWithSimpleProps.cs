@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CCP.UnitTests.Executors
+namespace CCP.UnitTests.Operations
 {
     public class OperationWithSimpleProps : IOperation
     {

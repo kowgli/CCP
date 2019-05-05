@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CCP.UnitTests.Executors
+namespace CCP.UnitTests.Operations
 {
     public class OperationForExecutionTest2 : IOperation
     {

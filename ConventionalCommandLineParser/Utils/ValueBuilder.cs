@@ -50,6 +50,8 @@ namespace CCP.Utils
                 { typeof(char), s => s[0] },
                 { typeof(char?), s => s[0] },
                 { typeof(bool), s => bool.Parse(s) },
+                { typeof(Guid), s => Guid.Parse(s) },
+                { typeof(Guid?), s => Guid.Parse(s) },
                 { typeof(bool?), s => bool.Parse(s) },
                 {
                     typeof(DateTime),

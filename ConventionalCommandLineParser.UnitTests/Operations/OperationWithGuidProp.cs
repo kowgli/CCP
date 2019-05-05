@@ -2,12 +2,13 @@
 
 namespace CCP.UnitTests.Operations
 {
-    public class OperationWithDateTimeProp : IOperation
+    public class OperationWithGuidProp : IOperation
     {
-        public DateTime Arg1 { get; set; }
+        public Guid Id { get; set; }
 
         public void Run()
         {
+            
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using CCP;
 using CCP.Exceptions;
-using CCP.UnitTests.Executors;
+using CCP.UnitTests.Operations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Globalization;
@@ -248,6 +248,22 @@ namespace ConventionalOperationLineParser.UnitTests
             Assert.AreEqual(123, operation.ComplexArray[0].IntValue);
             Assert.AreEqual("hello world", operation.ComplexArray[1].StringValue);
             Assert.AreEqual(true, operation.ComplexArray[2].BoolValue);
+        }
+
+
+        [TestMethod]
+        public void When_ArgumentIsGuid_Is_CorrectlyParsed()
+        {
+            string[] args = new string[] { nameof(OperationWithGuidProp), "Id={17AA4272-9DA4-431E-9958-5069D4B34C2F}" };
+
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsInstanceOfType(operations[0], typeof(OperationWithGuidProp));
+
+            OperationWithGuidProp operation = (OperationWithGuidProp)operations[0];
+
+            Assert.AreEqual(new Guid("17AA4272-9DA4-431E-9958-5069D4B34C2F"), operation.Id);
         }
     }
 }
