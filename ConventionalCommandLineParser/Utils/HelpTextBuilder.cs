@@ -35,7 +35,11 @@ namespace CCP.Utils
 
             foreach(TypeInfo operationType in operationTypes)
             {
-                sbHelp.AppendLine(operationType.Name);
+                sbHelp.AppendLine(operationType.Name);                
+                foreach(AliasAttribute alias in operationType.GetCustomAttributes<AliasAttribute>())
+                {
+                    sbHelp.AppendLine($"Alias: {alias.Name} or -{alias.Name}");
+                }
 
                 var properties = operationType.DeclaredProperties    
                                                    .OrderBy(p => p.Name)

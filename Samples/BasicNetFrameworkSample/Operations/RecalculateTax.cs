@@ -5,6 +5,8 @@ using System;
 
 namespace BasicNetCoreSample.Operations
 {
+    [Alias(Name = "rt")]
+    [Alias(Name = "rtax")]
     public class RecalculateTax : IOperation
     {
         [Required]
