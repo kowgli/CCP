@@ -2,7 +2,7 @@
 
 namespace CCP.Attributes
 {
-    [AttributeUsage(AttributeTargets.Class, Inherited = true, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, Inherited = true, AllowMultiple = true)]
     public class AliasAttribute : Attribute
     {
         public string Name { get; set; } = "";

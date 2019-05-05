@@ -358,5 +358,35 @@ namespace ConventionalOperationLineParser.UnitTests
             Assert.AreEqual(1, operations.Length);
             Assert.IsInstanceOfType(operations[0], typeof(OperationWithAliases));
         }
+
+        [TestMethod]
+        public void When_PropertyHasAlias_Is_CorrectlyIdentifiedAndSet()
+        {
+            string[] args = new string[] { "OperationWithAliasedProps", "nr=123" };
+
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsInstanceOfType(operations[0], typeof(OperationWithAliasedProps));
+
+            OperationWithAliasedProps operation = (OperationWithAliasedProps)operations[0];
+
+            Assert.AreEqual(123, operation.Number);
+        }
+
+        [TestMethod]
+        public void When_PropertyHasAlternateAlias_Is_CorrectlyIdentifiedAndSet()
+        {
+            string[] args = new string[] { "OperationWithAliasedProps", "nmbr=123" };
+
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsInstanceOfType(operations[0], typeof(OperationWithAliasedProps));
+
+            OperationWithAliasedProps operation = (OperationWithAliasedProps)operations[0];
+
+            Assert.AreEqual(123, operation.Number);
+        }
     }
 }

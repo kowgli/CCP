@@ -82,7 +82,10 @@ namespace CCP.Utils
 
             foreach (Argument argument in operation.Arguments)
             {
-                int count = availableProperties.Where(p => p.Name.ToLowerInvariant() == argument.Name.ToLowerInvariant()).Count();
+                int count = availableProperties.Where(p => 
+                                                        p.Name.ToLowerInvariant() == argument.Name.ToLowerInvariant()
+                                                        || p.GetCustomAttributes<AliasAttribute>().Any(a => a.Name.ToLowerInvariant() == argument.Name.ToLowerInvariant())
+                                                     ).Count();
 
                 if (count == 0)
                 {
@@ -101,7 +104,10 @@ namespace CCP.Utils
         {
             foreach (Argument argument in command.Arguments)
             {
-                PropertyInfo property = availableProperties.First(p => p.Name.ToLowerInvariant() == argument.Name.ToLowerInvariant());
+                PropertyInfo property = availableProperties.First(p => 
+                    p.Name.ToLowerInvariant() == argument.Name.ToLowerInvariant()
+                    || p.GetCustomAttributes<AliasAttribute>().Any(a => a.Name.ToLowerInvariant() == argument.Name.ToLowerInvariant())
+                );
                 property.SetValue(instance, valueBuilder.GetValue(property.PropertyType, argument));
             }
         }
