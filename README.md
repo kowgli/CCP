@@ -247,7 +247,7 @@ public class DoSomething : IOperation
 
 When an alias is defined, the operation may be called either by its full name or by its alias. Operation aliases can also be prefixed with a dash, which is a popular convention.
 
-All the following, will have exactly the same result:
+All the following will have exactly the same result:
 ```
 MyApp.exe DoSomething SomeNumber=123
 MyApp.exe a SomeNumber=123
@@ -257,3 +257,28 @@ MyApp.exe -some_other_alias SomeNumber=123
 ```
 
 > It's important to remember that although duplicated operation names (type names) will be caught by the compiler, duplicated aliases will not. It's the responsibility of the developer to assure they are unique. If not, it can have unexpected consequences - the wrong operation might be executed.
+
+### Property aliases
+
+Similarly to operations also properties can have aliases added like this:
+
+```
+
+public class DoSomething : IOperation
+{
+    [Alias(Name = "nr")]
+    [Alias(Name = "nmbr")]  
+    public int SomeNumber { get; set; }
+
+    public void Run()
+    {        
+    }
+}
+```
+
+Using the above operation, all the following will have the same result:  
+```
+MyApp.exe DoSomething SomeNumber=123
+MyApp.exe DoSomething nr=123
+MyApp.exe DoSomething nmbr=123
+```
