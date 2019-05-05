@@ -56,6 +56,10 @@ namespace CCP.Utils
                 {
                     typeof(DateTime),
                     s => dateFormat != null ? DateTime.ParseExact(s, dateFormat, locale) : DateTime.Parse(s, locale)
+                },
+                {
+                    typeof(DateTime?),
+                    s => dateFormat != null ? DateTime.ParseExact(s, dateFormat, locale) : DateTime.Parse(s, locale)
                 }
             };
         }

@@ -265,5 +265,54 @@ namespace ConventionalOperationLineParser.UnitTests
 
             Assert.AreEqual(new Guid("17AA4272-9DA4-431E-9958-5069D4B34C2F"), operation.Id);
         }
+
+        [TestMethod]
+        public void When_ArgumentIsNullable_Is_CorrectlyParsed()
+        {
+            string[] args = new string[] { nameof(OperationWithNullableProps), "SomeInt=123", "SomeGuid=27AA4272-9DA4-431E-9958-5069D4B34C2F" };
+
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsInstanceOfType(operations[0], typeof(OperationWithNullableProps));
+
+            OperationWithNullableProps operation = (OperationWithNullableProps)operations[0];
+
+            Assert.IsNotNull(operation.SomeInt);
+            Assert.AreEqual(123, operation.SomeInt);
+            Assert.IsNotNull(operation.SomeGuid);
+            Assert.AreEqual(new Guid("27AA4272-9DA4-431E-9958-5069D4B34C2F"), operation.SomeGuid);
+        }
+
+        [TestMethod]
+        public void When_ArgumentIsNullable_AndNotSet_IsLeftAsNull()
+        {
+            string[] args = new string[] { nameof(OperationWithNullableProps), "SomeInt=123", "SomeGuid=27AA4272-9DA4-431E-9958-5069D4B34C2F" };
+
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsInstanceOfType(operations[0], typeof(OperationWithNullableProps));
+
+            OperationWithNullableProps operation = (OperationWithNullableProps)operations[0];
+
+            Assert.IsNull(operation.SomeDate);           
+        }
+
+        [TestMethod]
+        public void When_ArgumentIsNullableDate_Is_CorrectlyParsed()
+        {
+            string[] args = new string[] { nameof(OperationWithNullableProps), "SomeDate=2019-05-05" };
+
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsInstanceOfType(operations[0], typeof(OperationWithNullableProps));
+
+            OperationWithNullableProps operation = (OperationWithNullableProps)operations[0];
+
+            Assert.IsNotNull(operation.SomeDate);
+            Assert.AreEqual(new DateTime(2019, 05, 05), operation.SomeDate);
+        }
     }
 }
