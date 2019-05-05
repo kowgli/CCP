@@ -8,6 +8,13 @@ Install-Package CCP
 
 [NuGet link](https://www.nuget.org/packages/CCP)
 
+## Changes
+
+### Version 1.3: 
+
+1. ```Guid```, ```Nullable<Guid>``` and ```Nullable<DateTime>``` support.
+1. Operation alias support.
+
 ## Description
 
 Yet another command line argument parser for .NET. 
@@ -167,6 +174,10 @@ The following basic types found in the .NET framework are supported for properti
 - char?
 - bool 
 - bool?
+- DateTime
+- DateTime?
+- Guid
+- Guid?
 
 ### Arrays
 
@@ -216,3 +227,33 @@ MyApp.exe DoSomething Person={Name:"\"John Doe\"",Age:123}
 
 Note there cannot be any whitespace between the values in the JSON. Instead of using double quotes, you can also use single quotes inside JSON, which might make it a bit cleaner.
 
+### Operation aliases
+
+Operations can have aliases (alternative names). They are defined by adding the ```Alias`` attribute like this:
+
+
+```
+[Alias(Name = "a")]
+[Alias(Name = "some_other_alias")]
+public class DoSomething : IOperation
+{
+    public int SomeNumber { get; set; }
+
+    public void Run()
+    {        
+    }
+}
+```
+
+When an alias is defined, the operation may be called either by its full name or by its alias. Operation aliases can also be prefixed with a dash, which is a popular convention.
+
+All the following, will have exactly the same result:
+```
+MyApp.exe DoSomething SomeNumber=123
+MyApp.exe a SomeNumber=123
+MyApp.exe -a SomeNumber=123
+MyApp.exe some_other_alias SomeNumber=123
+MyApp.exe -some_other_alias SomeNumber=123
+```
+
+> It's important to remember that although duplicated operation names (type names) will be caught by the compiler, duplicated aliases will not. It's the responsibility of the developer to assure they are unique. If not, it can have unexpected consequences - the wrong operation might be executed.
