@@ -314,5 +314,49 @@ namespace ConventionalOperationLineParser.UnitTests
             Assert.IsNotNull(operation.SomeDate);
             Assert.AreEqual(new DateTime(2019, 05, 05), operation.SomeDate);
         }
+
+        [TestMethod]
+        public void When_OperationHasAlias_Is_CorrectlyIdentified()
+        {
+            string[] args = new string[] { "a" };
+
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsInstanceOfType(operations[0], typeof(OperationWithAliases));
+        }
+
+        [TestMethod]
+        public void When_OperationHasAlternateAlias_Is_CorrectlyIdentified()
+        {
+            string[] args = new string[] { "some_alias" };
+
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsInstanceOfType(operations[0], typeof(OperationWithAliases));
+        }
+
+        [TestMethod]
+        public void When_OperationHasAlias_UsedWithDash_Is_CorrectlyIdentified()
+        {
+            string[] args = new string[] { "-a" };
+
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsInstanceOfType(operations[0], typeof(OperationWithAliases));
+        }
+
+        [TestMethod]
+        public void When_OperationHasAlternateAlias_UsedWithDash_Is_CorrectlyIdentified()
+        {
+            string[] args = new string[] { "-some_alias" };
+
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsInstanceOfType(operations[0], typeof(OperationWithAliases));
+        }
     }
 }

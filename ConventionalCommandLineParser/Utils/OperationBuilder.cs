@@ -52,7 +52,14 @@ namespace CCP.Utils
         private TypeInfo FindOperationTypeWithValidation(TypeInfo[] operationTypes, Operation operation)
         {
             TypeInfo[] filteredOperationTypes = operationTypes
-                                                      .Where(t => t.Name.ToLowerInvariant() == operation.Name.ToLowerInvariant())
+                                                      .Where(t => 
+                                                            t.Name.ToLowerInvariant() == operation.Name.ToLowerInvariant()
+                                                            ||
+                                                            t.GetCustomAttributes<AliasAttribute>().Any(a => 
+                                                                a.Name.ToLowerInvariant() == operation.Name.ToLowerInvariant()
+                                                                || $"-{a.Name.ToLowerInvariant()}" == operation.Name.ToLowerInvariant()
+                                                            )
+                                                       )
                                                       .ToArray();
 
             if (filteredOperationTypes.Length == 0)
