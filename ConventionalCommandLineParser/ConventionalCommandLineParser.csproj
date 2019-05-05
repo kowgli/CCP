@@ -5,10 +5,10 @@
     <LangVersion>8.0</LangVersion>
     <NullableContextOptions>enable</NullableContextOptions>
     <RootNamespace>CCP</RootNamespace>
-    <AssemblyVersion>1.2.0.0</AssemblyVersion>
-    <FileVersion>1.2.0.0</FileVersion>
+    <AssemblyVersion>1.3.0.0</AssemblyVersion>
+    <FileVersion>1.3.0.0</FileVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.2.0</Version>
+    <Version>1.3.0</Version>
     <PackageId>CCP</PackageId>
     <Authors>Łukasz Grzybowski-Glikman</Authors>
     <Company />
@@ -20,6 +20,9 @@
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Copyright />
+    <PackageReleaseNotes>Extended type support by adding Guid, Nullable&lt;Guid&gt; and Nullable&lt;DateTime&gt;.
+
+Supporting aliases on operations and properties.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
