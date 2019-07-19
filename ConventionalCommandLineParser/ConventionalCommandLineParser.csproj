@@ -5,10 +5,10 @@
     <LangVersion>8.0</LangVersion>
     <NullableContextOptions>enable</NullableContextOptions>
     <RootNamespace>CCP</RootNamespace>
-    <AssemblyVersion>1.4.0.0</AssemblyVersion>
-    <FileVersion>1.4.0.0</FileVersion>
+    <AssemblyVersion>1.4.1.0</AssemblyVersion>
+    <FileVersion>1.4.1.0</FileVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.4.0</Version>
+    <Version>1.4.1</Version>
     <PackageId>CCP</PackageId>
     <Authors>Łukasz Grzybowski-Glikman</Authors>
     <Company />

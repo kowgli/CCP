@@ -40,20 +40,20 @@ namespace CCP.Utils
                 {
                     sbHelp.AppendLine($"Alias: {alias.Name} or -{alias.Name}");
                 }
-
-                var properties = operationType.DeclaredProperties    
-                                                   .OrderBy(p => p.Name)
-                                                   .Select(p => new
-                                                   {
-                                                       p.Name,
-                                                       Required = p.CustomAttributes.Any(a => a.AttributeType == typeof(RequiredAttribute)),
-                                                       TypeName = p.PropertyType.GenericTypeArguments.Length > 0 ? 
-                                                                  p.PropertyType.GenericTypeArguments[0].Name : p.PropertyType.Name
-                                                   });
+           
+                var properties = PropertyHelper.GetPropertiesOfTypeRecusive(operationType)
+                                               .OrderBy(p => p.Name)
+                                               .Select(p => new
+                                               {
+                                                   p.Name,
+                                                   Required = p.CustomAttributes.Any(a => a.AttributeType == typeof(RequiredAttribute)),
+                                                   TypeName = p.PropertyType.GenericTypeArguments.Length > 0 ? 
+                                                              p.PropertyType.GenericTypeArguments[0].Name : p.PropertyType.Name
+                                               });
 
                 foreach (var property in properties)
                 {
-                    sbHelp.Append($"\t{property.Name}=<{property.TypeName}>");
+                    sbHelp.Append($"\t{property.Name} <{property.TypeName}>");
                     if (property.Required) { sbHelp.Append(" [REQUIRED]"); }
                     sbHelp.AppendLine();
                 }

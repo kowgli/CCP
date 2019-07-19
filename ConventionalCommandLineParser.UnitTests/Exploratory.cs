@@ -56,7 +56,7 @@ namespace CCP.UnitTests
         [TestMethod]
         public void DoesPrintHelp()
         {
-            Type type = typeof(OperationWithSimpleProps);
+            Type type = typeof(OperationWithBaseClass2);
             string helpText = HelpTextBuilder.BuildHelpText(type.Assembly);
         }
     }

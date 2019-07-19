@@ -82,7 +82,7 @@ namespace CCP.Utils
 
         private PropertyInfo[] FindPropertiesWithValidation(TypeInfo typeInfo, Operation operation)
         {
-            List<PropertyInfo> availableProperties = GetPropertiesOfTypeRecusive(typeInfo);
+            List<PropertyInfo> availableProperties = PropertyHelper.GetPropertiesOfTypeRecusive(typeInfo);
 
             foreach (Argument argument in operation.Arguments)
             {
@@ -102,26 +102,6 @@ namespace CCP.Utils
             }
 
             return availableProperties.ToArray();
-        }
-
-        private List<PropertyInfo> GetPropertiesOfTypeRecusive(TypeInfo typeInfo)
-        {
-            List<PropertyInfo> result = new List<PropertyInfo>();
-
-            PropertyInfo[] availableProperties = typeInfo.DeclaredProperties
-                                                         .Where(p => p.CanWrite && p.SetMethod?.IsPublic == true)
-                                                         .ToArray();
-
-            result.AddRange(availableProperties);
-
-            if(typeInfo.BaseType != typeof(object))
-            {
-                List<PropertyInfo> baseProperties = GetPropertiesOfTypeRecusive(typeInfo.BaseType.GetTypeInfo());
-
-                result.AddRange(baseProperties);
-            }
-
-            return result;
         }
 
         private void SetPropertiesOnInstance(IOperation instance, Operation command, PropertyInfo[] availableProperties)
