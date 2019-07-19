@@ -2,6 +2,7 @@
 using CCP.Exceptions;
 using CCP.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -81,9 +82,7 @@ namespace CCP.Utils
 
         private PropertyInfo[] FindPropertiesWithValidation(TypeInfo typeInfo, Operation operation)
         {
-            PropertyInfo[] availableProperties = typeInfo.DeclaredProperties
-                                                         .Where(p => p.CanWrite && p.SetMethod?.IsPublic == true)
-                                                         .ToArray();
+            List<PropertyInfo> availableProperties = GetPropertiesOfTypeRecusive(typeInfo);
 
             foreach (Argument argument in operation.Arguments)
             {
@@ -102,7 +101,27 @@ namespace CCP.Utils
                 }
             }
 
-            return availableProperties;
+            return availableProperties.ToArray();
+        }
+
+        private List<PropertyInfo> GetPropertiesOfTypeRecusive(TypeInfo typeInfo)
+        {
+            List<PropertyInfo> result = new List<PropertyInfo>();
+
+            PropertyInfo[] availableProperties = typeInfo.DeclaredProperties
+                                                         .Where(p => p.CanWrite && p.SetMethod?.IsPublic == true)
+                                                         .ToArray();
+
+            result.AddRange(availableProperties);
+
+            if(typeInfo.BaseType != typeof(object))
+            {
+                List<PropertyInfo> baseProperties = GetPropertiesOfTypeRecusive(typeInfo.BaseType.GetTypeInfo());
+
+                result.AddRange(baseProperties);
+            }
+
+            return result;
         }
 
         private void SetPropertiesOnInstance(IOperation instance, Operation command, PropertyInfo[] availableProperties)

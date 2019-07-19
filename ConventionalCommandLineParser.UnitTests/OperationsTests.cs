@@ -403,5 +403,38 @@ namespace ConventionalOperationLineParser.UnitTests
 
             Assert.AreEqual(123, operation.Number);
         }
+
+        [TestMethod]
+        public void When_OperationHasAbstractBaseClass_ArgumentsAreCorrectlyPassed()
+        {
+            string[] args = new string[] { "OperationWithBaseClass", "Arg1=hello", "Arg2=10" };
+
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsInstanceOfType(operations[0], typeof(OperationWithBaseClass));
+
+            OperationWithBaseClass operation = (OperationWithBaseClass)operations[0];
+
+            Assert.AreEqual("hello", operation.Arg1);
+            Assert.AreEqual(10, operation.Arg2);
+        }
+
+        [TestMethod]
+        public void When_OperationHasMultiLevelAbstractBaseClass_ArgumentsAreCorrectlyPassed()
+        {
+            string[] args = new string[] { "OperationWithBaseClass2", "Arg1=hello", "Arg2=10", "Arg3=100" };
+
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsInstanceOfType(operations[0], typeof(OperationWithBaseClass2));
+
+            OperationWithBaseClass2 operation = (OperationWithBaseClass2)operations[0];
+
+            Assert.AreEqual("hello", operation.Arg1);
+            Assert.AreEqual(10, operation.Arg2);
+            Assert.AreEqual(100, operation.Arg3);
+        }
     }
 }

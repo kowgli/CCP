@@ -1,6 +1,7 @@
 using CCP.Models;
 using CCP.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 
 namespace ConventionalOperationLineParser.UnitTests
 {
