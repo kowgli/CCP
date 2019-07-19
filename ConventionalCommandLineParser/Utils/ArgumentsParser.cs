@@ -17,7 +17,7 @@ namespace CCP.Utils
             List<Operation> operations = new List<Operation>();
             Operation? operation = null;
 
-            foreach (string arg in args)
+            foreach (string arg in args ?? new string[0])
             {
                 if(ArgumentIsCommand(arg))
                 {

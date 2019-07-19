@@ -10,6 +10,10 @@ Install-Package CCP
 
 ## Changes
 
+### Version 1.4: 
+
+1. Supporting arguments in Operation base classes.
+
 ### Version 1.3: 
 
 1. ```Guid```, ```Nullable<Guid>``` and ```Nullable<DateTime>``` support.

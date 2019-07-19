@@ -10,7 +10,7 @@ namespace CCP.Models
             string[] split = (argument ?? "").Split(new char[] { '=' }, 2);
             if(split.Length != 2)
             {
-                throw new ArgumentFormatException(argument);
+                throw new ArgumentFormatException(argument ?? "");
             }
 
             this.Name = split[0];
