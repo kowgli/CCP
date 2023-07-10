@@ -20,9 +20,7 @@
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Copyright />
-    <PackageReleaseNotes>Extended type support by adding Guid, Nullable&lt;Guid&gt; and Nullable&lt;DateTime&gt;.
-
-Supporting aliases on operations and properties.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added option to create descriptions for operations and operation arguments.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
