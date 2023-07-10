@@ -1,10 +1,8 @@
 ﻿using CCP.Attributes;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace CCP.Utils
 {
@@ -17,7 +15,7 @@ namespace CCP.Utils
             sbHelp.AppendLine($"{operationsAssembly.GetName().Name} v{operationsAssembly.GetName().Version}");
             sbHelp.AppendLine();
 
-            if(includingError != null)
+            if (includingError != null)
             {
                 sbHelp.AppendLine("ERROR");
                 sbHelp.AppendLine("-----");
@@ -33,35 +31,55 @@ namespace CCP.Utils
                                                            .OrderBy(x => x.Name)
                                                            .ToArray();
 
-            foreach(TypeInfo operationType in operationTypes)
+            foreach (TypeInfo operationType in operationTypes)
             {
-                sbHelp.AppendLine(operationType.Name);                
-                foreach(AliasAttribute alias in operationType.GetCustomAttributes<AliasAttribute>())
+                var dscAttribute = operationType.GetCustomAttributes<DescriptionAttribute>().FirstOrDefault();
+                if (dscAttribute != null)
                 {
-                    sbHelp.AppendLine($"Alias: {alias.Name} or -{alias.Name}");
+                    sbHelp.Append($"[{dscAttribute.Description}]");
+                    sbHelp.Append(Environment.NewLine);
                 }
-           
+
+                sbHelp.AppendLine(operationType.Name);
+                foreach (AliasAttribute alias in operationType.GetCustomAttributes<AliasAttribute>())
+                {
+                    sbHelp.AppendLine($"\tAlias: {alias.Name} or -{alias.Name}");
+                }
+
                 var properties = PropertyHelper.GetPropertiesOfTypeRecusive(operationType)
                                                .OrderBy(p => p.Name)
                                                .Select(p => new
                                                {
                                                    p.Name,
-                                                   Required = p.CustomAttributes.Any(a => a.AttributeType == typeof(RequiredAttribute)),
-                                                   TypeName = p.PropertyType.GenericTypeArguments.Length > 0 ? 
-                                                              p.PropertyType.GenericTypeArguments[0].Name : p.PropertyType.Name
+                                                   HasRequiredAttribute = p.CustomAttributes.Any(a => a.AttributeType == typeof(RequiredAttribute)),
+                                                   HasDescriptionAttribute = p.CustomAttributes.Any(a => a.AttributeType == typeof(DescriptionAttribute)),
+                                                   TypeName = p.PropertyType.GenericTypeArguments.Length > 0 ?
+                                                              p.PropertyType.GenericTypeArguments[0].Name : p.PropertyType.Name,
+                                                   DescriptionAttribute = p.CustomAttributes.Any(a => a.AttributeType == typeof(DescriptionAttribute)) ?
+                                                                          p.GetCustomAttributes<DescriptionAttribute>().First() : null
                                                });
 
                 foreach (var property in properties)
                 {
-                    sbHelp.Append($"\t{property.Name} <{property.TypeName}>");
-                    if (property.Required) { sbHelp.Append(" [REQUIRED]"); }
+                    if (property.HasDescriptionAttribute)
+                    {                        
+                        sbHelp.Append($"\t  [{property.DescriptionAttribute.Description}]");
+                        sbHelp.Append(Environment.NewLine);
+                    }
+
+                    sbHelp.Append($"\t* {property.Name} <{property.TypeName}>");
+                    
+                    if (property.HasRequiredAttribute) { sbHelp.Append(" [REQUIRED]"); }                    
+
                     sbHelp.AppendLine();
                 }
 
                 sbHelp.AppendLine();
-            }            
+            }
 
-            return sbHelp.ToString();
+            string helpText = sbHelp.ToString();
+
+            return helpText;
         }
     }
 }

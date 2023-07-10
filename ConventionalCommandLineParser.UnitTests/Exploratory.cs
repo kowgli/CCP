@@ -2,15 +2,12 @@
 using CCP.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CCP.UnitTests
 {
-    [TestClass]
+    [TestClass]    
     public class Exploratory
     {
         [TestMethod]
@@ -31,7 +28,7 @@ namespace CCP.UnitTests
         [TestMethod]
         public void HowToSetPropertyOnDynamicallyCreatedObject()
         {
-            Type type = typeof(OperationWithSimpleProps);          
+            Type type = typeof(OperationWithSimpleProps);
 
             IOperation instance = (IOperation)Activator.CreateInstance(type);
 
@@ -58,6 +55,17 @@ namespace CCP.UnitTests
         {
             Type type = typeof(OperationWithBaseClass2);
             string helpText = HelpTextBuilder.BuildHelpText(type.Assembly);
+
+            Assert.IsFalse(string.IsNullOrWhiteSpace(helpText));
+        }
+
+        [TestMethod]
+        public void ShowsDescription()
+        {
+            Type type = typeof(OperationWithDescriptionProp);
+            string helpText = HelpTextBuilder.BuildHelpText(type.Assembly);
+
+            Assert.IsFalse(string.IsNullOrWhiteSpace(helpText));
         }
     }
 }
