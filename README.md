@@ -10,6 +10,10 @@ Install-Package CCP
 
 ## Changes
 
+### Version 1.5.0: 
+
+1. Added **Description** attribute, making it possible to add textual description in the display help text.
+
 ### Version 1.4.1: 
 
 1. Supporting arguments in Operation base classes.
@@ -285,4 +289,38 @@ Using the above operation, all the following will have the same result:
 MyApp.exe DoSomething SomeNumber=123
 MyApp.exe DoSomething nr=123
 MyApp.exe DoSomething nmbr=123
+```
+
+###  Description
+
+Desciptions can be added to operation classes and properties.
+
+```
+[Description("Operation description")]
+public class OperationWithDescriptionProp : IOperation
+{
+    public string Arg1 { get; set; }
+
+    [Description("Test description")]
+    public string Arg2 { get; set; }
+
+    [Description(Description = "Test description 2")]
+    public string Arg3 { get; set; }
+
+    public void Run()
+    {
+    }
+}
+```
+
+Will display the following help text:
+
+```
+[Operation description]
+OperationWithDescriptionProp
+	* Arg1 <String>
+	  [Test description]
+	* Arg2 <String>
+	  [Test description 2]
+	* Arg3 <String>
 ```
