@@ -133,11 +133,11 @@ Command doesn't have any operations.
 POSSIBLE PARAMETERS
 -------------------
 RecalculateTax
-        YearFrom=<Int32> [REQUIRED]
-        YearTo=<Int32>
+        * YearFrom=<Int32> [REQUIRED]
+        * YearTo=<Int32>
 
 UpdateStatistics
-        Name=<String>
+        * Name=<String>
 ```
 
 ## Configuration
