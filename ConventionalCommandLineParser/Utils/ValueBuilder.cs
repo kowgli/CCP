@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Reflection;
 
 namespace CCP.Utils
 {
@@ -73,6 +74,11 @@ namespace CCP.Utils
                     return ParseAsArray(type, argument);
                 }
 
+                if (IsGenericListLikeType(type))
+                {
+                    return ParseAsList(type, argument);
+                }
+
                 var parsers = GetDefaultParsers();
                 if (parsers.ContainsKey(type))
                 {
@@ -104,6 +110,34 @@ namespace CCP.Utils
             }
 
             return result;
+        }
+
+        private static bool IsGenericListLikeType(Type type)
+        {
+            var typeInfo = type.GetTypeInfo();
+            if (!typeInfo.IsGenericType) return false;
+
+            var genericDef = typeInfo.GetGenericTypeDefinition();
+            return genericDef == typeof(List<>)
+                || genericDef == typeof(IList<>)
+                || genericDef == typeof(IEnumerable<>)
+                || genericDef == typeof(ICollection<>)
+                || genericDef == typeof(IReadOnlyList<>)
+                || genericDef == typeof(IReadOnlyCollection<>);
+        }
+
+        private object ParseAsList(Type type, Argument argument)
+        {
+            Type elementType = type.GetTypeInfo().GenericTypeArguments[0];
+            Type listType = typeof(List<>).MakeGenericType(elementType);
+            var list = (System.Collections.IList)Activator.CreateInstance(listType);
+
+            for (int i = 0; i < argument.Values.Length; i++)
+            {
+                list.Add(GetValue(elementType, new Argument($"{argument.Name}={argument.Values[i]}", arraySeparator)));
+            }
+
+            return list;
         }
     }
 }
