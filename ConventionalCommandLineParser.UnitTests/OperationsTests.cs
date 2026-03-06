@@ -436,5 +436,159 @@ namespace ConventionalOperationLineParser.UnitTests
             Assert.AreEqual(10, operation.Arg2);
             Assert.AreEqual(100, operation.Arg3);
         }
+
+        [TestMethod]
+        public void When_StringListProperty_PropertyValuesAreSet()
+        {
+            string[] args = new string[] { nameof(OperationWithCollectionProps), "StringList=aaa;bbb;ccc" };
+
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsInstanceOfType(operations[0], typeof(OperationWithCollectionProps));
+
+            OperationWithCollectionProps operation = (OperationWithCollectionProps)operations[0];
+
+            Assert.IsNotNull(operation.StringList);
+            Assert.AreEqual(3, operation.StringList.Count);
+            Assert.AreEqual("aaa", operation.StringList[0]);
+            Assert.AreEqual("bbb", operation.StringList[1]);
+            Assert.AreEqual("ccc", operation.StringList[2]);
+        }
+
+        [TestMethod]
+        public void When_IntListProperty_PropertyValuesAreSet()
+        {
+            string[] args = new string[] { nameof(OperationWithCollectionProps), "IntList=1;2;3" };
+
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsInstanceOfType(operations[0], typeof(OperationWithCollectionProps));
+
+            OperationWithCollectionProps operation = (OperationWithCollectionProps)operations[0];
+
+            Assert.IsNotNull(operation.IntList);
+            Assert.AreEqual(3, operation.IntList.Count);
+            Assert.AreEqual(1, operation.IntList[0]);
+            Assert.AreEqual(2, operation.IntList[1]);
+            Assert.AreEqual(3, operation.IntList[2]);
+        }
+
+        [TestMethod]
+        public void When_StringIListProperty_PropertyValuesAreSet()
+        {
+            string[] args = new string[] { nameof(OperationWithCollectionProps), "StringIList=x;y;z" };
+
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsInstanceOfType(operations[0], typeof(OperationWithCollectionProps));
+
+            OperationWithCollectionProps operation = (OperationWithCollectionProps)operations[0];
+
+            Assert.IsNotNull(operation.StringIList);
+            Assert.AreEqual(3, operation.StringIList.Count);
+            Assert.AreEqual("x", operation.StringIList[0]);
+            Assert.AreEqual("y", operation.StringIList[1]);
+            Assert.AreEqual("z", operation.StringIList[2]);
+        }
+
+        [TestMethod]
+        public void When_IntIEnumerableProperty_PropertyValuesAreSet()
+        {
+            string[] args = new string[] { nameof(OperationWithCollectionProps), "IntIEnumerable=10;20;30" };
+
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsInstanceOfType(operations[0], typeof(OperationWithCollectionProps));
+
+            OperationWithCollectionProps operation = (OperationWithCollectionProps)operations[0];
+
+            Assert.IsNotNull(operation.IntIEnumerable);
+            var values = System.Linq.Enumerable.ToList(operation.IntIEnumerable);
+            Assert.AreEqual(3, values.Count);
+            Assert.AreEqual(10, values[0]);
+            Assert.AreEqual(20, values[1]);
+            Assert.AreEqual(30, values[2]);
+        }
+
+        [TestMethod]
+        public void When_StringICollectionProperty_PropertyValuesAreSet()
+        {
+            string[] args = new string[] { nameof(OperationWithCollectionProps), "StringICollection=foo;bar" };
+
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsInstanceOfType(operations[0], typeof(OperationWithCollectionProps));
+
+            OperationWithCollectionProps operation = (OperationWithCollectionProps)operations[0];
+
+            Assert.IsNotNull(operation.StringICollection);
+            Assert.AreEqual(2, operation.StringICollection.Count);
+        }
+
+        [TestMethod]
+        public void When_IntIReadOnlyListProperty_PropertyValuesAreSet()
+        {
+            string[] args = new string[] { nameof(OperationWithCollectionProps), "IntIReadOnlyList=5;10;15" };
+
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsInstanceOfType(operations[0], typeof(OperationWithCollectionProps));
+
+            OperationWithCollectionProps operation = (OperationWithCollectionProps)operations[0];
+
+            Assert.IsNotNull(operation.IntIReadOnlyList);
+            Assert.AreEqual(3, operation.IntIReadOnlyList.Count);
+            Assert.AreEqual(5, operation.IntIReadOnlyList[0]);
+            Assert.AreEqual(10, operation.IntIReadOnlyList[1]);
+            Assert.AreEqual(15, operation.IntIReadOnlyList[2]);
+        }
+
+        [TestMethod]
+        public void When_ComplexListProperty_PropertyValuesAreSet()
+        {
+            string json = @"{IntValue: 42, StringValue: ""hello"", BoolValue: true}";
+
+            string[] args = new string[] { nameof(OperationWithCollectionProps), $"ComplexList={json};{json}" };
+
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsInstanceOfType(operations[0], typeof(OperationWithCollectionProps));
+
+            OperationWithCollectionProps operation = (OperationWithCollectionProps)operations[0];
+
+            Assert.IsNotNull(operation.ComplexList);
+            Assert.AreEqual(2, operation.ComplexList.Count);
+            Assert.AreEqual(42, operation.ComplexList[0].IntValue);
+            Assert.AreEqual("hello", operation.ComplexList[0].StringValue);
+            Assert.IsTrue(operation.ComplexList[0].BoolValue);
+        }
+
+        [TestMethod]
+        public void When_DictionaryProperty_PropertyValuesAreSet()
+        {
+            string json = @"{""key1"":1,""key2"":2,""key3"":3}";
+
+            string[] args = new string[] { nameof(OperationWithCollectionProps), $"StringIntDictionary={json}" };
+
+            IOperation[] operations = Executor.BuildOperations(args, typeof(ExecutorTests).Assembly, Options.Default);
+
+            Assert.AreEqual(1, operations.Length);
+            Assert.IsInstanceOfType(operations[0], typeof(OperationWithCollectionProps));
+
+            OperationWithCollectionProps operation = (OperationWithCollectionProps)operations[0];
+
+            Assert.IsNotNull(operation.StringIntDictionary);
+            Assert.AreEqual(3, operation.StringIntDictionary.Count);
+            Assert.AreEqual(1, operation.StringIntDictionary["key1"]);
+            Assert.AreEqual(2, operation.StringIntDictionary["key2"]);
+            Assert.AreEqual(3, operation.StringIntDictionary["key3"]);
+        }
     }
 }
